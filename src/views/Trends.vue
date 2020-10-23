@@ -1,11 +1,25 @@
 <template>
     <div>
-        <header-nav istrue="1"></header-nav>
+        <header-nav istrue="1" @newsId="getNewsId"></header-nav>
         <banner></banner>
         <div class="category-box">
-            <p class="category-bread-crumb">位置：文化馆首页-文化动态-本地新闻</p>
-            <p class="category-title">本地新闻</p>
-            <category-list></category-list>
+            <p class="category-bread-crumb">位置：
+                <router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>
+                -
+                <router-link tag="span" :to="{path: 'trends?news_id=17'}">文化动态</router-link>
+                <template v-if="!list.cate">
+                    -
+                    <router-link v-if="list.list" tag="span" :to="{path: 'grid?news_id=' + list.list[0].cate_id}">
+                        {{list.list[0].cate_name}}</router-link>
+                </template>
+            </p>
+            <template v-if="list.cate">
+                <p class="category-title">文化动态</p>
+            </template>
+            <template v-else>
+                <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
+            </template>
+            <category-list :list="list" type="list"></category-list>
         </div>
         <Footer></Footer>
     </div>
@@ -13,7 +27,37 @@
 
 <script>
     export default {
-        name: "Trends"
+        name: "Trends",
+        data() {
+            return {
+                newsId: "",
+                list: ""
+            }
+        },
+        mounted() {
+            this.getNewsId()
+        },
+        methods: {
+            getNewsId: function (value) {
+                let params = {cate_id: value || this.$route.query.news_id}
+                this.$api.getNewsList(params)
+                    .then((data) => {
+                        if (data.data.code == 0 && data.data.msg == "success") {
+                            console.log(data)
+                            if(!data.data.data.list.length){
+                                this.$message.error("该目录下暂无内容，敬请期待")
+                                return false
+                            }
+                            this.list = data.data.data
+                        } else {
+                            this.$message.error(data.data.msg)
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+        }
     }
 </script>
 

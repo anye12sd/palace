@@ -1,25 +1,53 @@
 <template>
     <div class="list-box">
-        <div class="list flex flexWrap" v-for="(item,index) in 10" :key="index">
-            <span class="list-title">本地新闻</span>
-            <span class="list-content flex-1">2019“一带一路·美好生活”第三届全国手机摄影作品巡展在永康文化馆开展</span>
-            <span class="list-time">2020.09.06</span>
-        </div>
-        <pager :pageSize="pageSize" v-model="pageNo" @on-jump="jump"></pager>
+        <template v-if="type == 'list'">
+            <div class="list" v-for="(item,index) in list.list" :key="index">
+                <router-link tag="div" class="flex flexWrap" :to="{ path: 'NewsDetail', query: {id: item.id} }">
+                    <span class="list-title">{{item.cate_name}}</span>
+                    <span class="list-content flex-1">{{item.title}}</span>
+                    <span class="list-time">{{item.create_time}}</span>
+                </router-link>
+            </div>
+        </template>
+        <template v-else>
+            <div class="video-box flex flexWrap">
+                <template v-for="(item,index) in list.list">
+                    <router-link tag="div" class="culture-content-left flex-1" :to="{ path: 'NewsDetail', query: {id: item.id} }" :key="index">
+                        <div class="culture-content-box-mask" v-if="item.status != 1">
+                            <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
+                        </div>
+                        <img :src="list.img_path + item.image" alt="">
+                        <p class="culture-content-left-time">{{item.create_time}}</p>
+                        <p class="culture-content-left-text">
+                            <span class="culture-content-left-text-title">{{item.cate_name}}</span>
+                            <span class="culture-content-left-text-content">{{item.title}}</span>
+                        </p>
+                    </router-link>
+                </template>
+            </div>
+        </template>
+        <pager :total="list.total" :pageSize="pageSize" v-model="pageNo" @on-jump="jump"></pager>
     </div>
 </template>
 
 <script>
     export default {
         name: "CategoryList",
-        data (){
-            return{
-                pageSize: 30,
-                pageNo: 2
+        props: {
+            list: [Object, String],
+            type: String
+        },
+        data() {
+            return {
+                pageSize: 10,
+                pageNo: 1
             }
         },
-        methods:{
-            jump(id){
+        mounted() {
+            this.pageSize = this.list.total_page
+        },
+        methods: {
+            jump(id) {
                 console.log(id)
             },
         }
@@ -27,27 +55,5 @@
 </script>
 
 <style scoped>
-    .list-box{
 
-    }
-    .list{
-        padding: 20px 0;
-        letter-spacing: 2px;
-        border-bottom: 1px solid rgba(240, 240, 240, 1);
-    }
-    .list-title{
-        color: #74bd00;
-        font-size: 16px;
-        padding-right: 12px;
-        border-right: 1px solid #ccc;
-    }
-    .list-content{
-        padding-left: 12px;
-        color: #191919;
-        font-size: 16px;
-    }
-    .list-time{
-        color: #9a9a9a;
-        font-size: 14px;
-    }
 </style>

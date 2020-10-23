@@ -9,6 +9,9 @@ const Grid = () => import(/* webpackChunkName: "Grid" */ '@/views/Grid.vue')
 const Live = () => import(/* webpackChunkName: "Live" */ '@/views/Live.vue')
 const ShowRoom = () => import(/* webpackChunkName: "ShowRoom" */ '@/views/ShowRoom.vue')
 const Contact = () => import(/* webpackChunkName: "Contact" */ '@/views/Contact.vue')
+const NewsDetail = () => import(/* webpackChunkName: "NewsDetail" */ '@/views/NewsDetail.vue')
+const Enroll = () => import(/* webpackChunkName: "Enroll" */ '@/views/Enroll.vue')
+const SearchList = () => import(/* webpackChunkName: "Contact" */ '@/views/SearchList.vue')
 
 export default new Router({
     routes: [
@@ -66,6 +69,30 @@ export default new Router({
             component: Contact,
             meta: {
                 title: "联系我们"
+            }
+        },
+        {
+            path: "/newsDetail",
+            name: "NewsDetail",
+            component: NewsDetail,
+            meta: {
+                title: "详情"
+            }
+        },
+        {
+            path: "/enroll",
+            name: "Enroll",
+            component: Enroll,
+            meta: {
+                title: "报名"
+            }
+        },
+        {
+            path: "/searchList",
+            name: "SearchList",
+            component: SearchList,
+            meta: {
+                title: "搜索列表"
             }
         },
     ]

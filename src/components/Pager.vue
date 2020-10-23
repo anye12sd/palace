@@ -21,7 +21,7 @@
             </template>
             <a class="pager-next" :class="{'pager-disabled':nextDisable}" href="javascript:;" @click="jumpNext()">下一页</a>
             <span class="pager-total">
-            （10篇/页，共14页，共140篇）
+            （共{{pageSize}}页，共{{total}}篇）
             </span>
         </div>
 <!--        <div class="pager-input">-->
@@ -46,7 +46,8 @@
             pageNo:{ //通过v-model传过来的参数
                 type: Number,
                 default: 1
-            }
+            },
+            total: [Number, String]
         },
         data(){
             return {
@@ -110,25 +111,5 @@
 </script>
 
 <style scoped>
-.pager-wrapper{
-    width: 100%;
-    text-align: center;
-    padding: 90px 0;
-}
-    .pager-box-div{
-        display: inline-block;
-        /*margin: 0 10px;*/
-    }
-    .pager-prev, .pager-next{
-        font-size: 14px;
-    }
-    .pager-box a{
-        text-decoration: none;
-        color: #191919;
-        margin: 0 10px;
-    }
-    .pager-curr{
-        margin: 0 10px;
-        color: #74bd00;
-    }
+
 </style>
