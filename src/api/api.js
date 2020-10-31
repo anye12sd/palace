@@ -15,6 +15,8 @@ import {fetchPost, fetchGet, fetchDel, fetchPut} from "../utils/https";
 
 // 获取首页banner
 export const getBanner = () => fetchGet('/banner');
+// 获取分页banner
+export const getNewsCate = params => fetchGet('/news_cate', params);
 // 获取新闻列表
 export const getNewsList = params => fetchGet('/news_list', params);
 // 获取新闻列表配置
@@ -23,6 +25,8 @@ export const getNewsBase = () => fetchGet('/base');
 
 // 获取新闻详情
 export const getNewsDetail = params => fetchGet('/news_detail', params);
+// 点赞
+export const postLikes = params => fetchPost('/likes', params);
 // 获取课程列表
 export const getCourse = params => fetchGet('/course', params);
 // 获取课程分类

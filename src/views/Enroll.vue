@@ -455,7 +455,6 @@
                 }
                 if (val == 'idErr') {
                     if (!idRegexp.test(this.enroll.id_card)) {
-                        console.log(3465)
                         this.$refs[val].style.opacity = '100%';
                         return false
                     } else {

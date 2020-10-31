@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name: 'Pager',
+        name: 'Pagers',
         model:{ //通过v-model传过来的参数
             prop: 'pageNo',
             event: 'jumpPage'
@@ -76,7 +76,7 @@
                     return ;
                 }else{
                     this.$emit('jumpPage',this.pageNo-1);
-                    this.$emit('on-jump',this.pageNo-1);
+                    // this.$emit('on-jump',this.pageNo-1);
                 }
             },
             jumpNext: function(){ //点击下一页
@@ -84,7 +84,7 @@
                     return ;
                 }else{
                     this.$emit('jumpPage',this.pageNo+1); //修改当前页码
-                    this.$emit('on-jump',this.pageNo+1); //跳转
+                    // this.$emit('on-jump',this.pageNo+1); //跳转
                 }
             },
             jump: function(id){ //直接跳转
@@ -93,7 +93,7 @@
                 }
                 this.jumpPage = '';
                 this.$emit('jumpPage',id); //修改当前页码
-                this.$emit('on-jump',id); //跳转
+                // this.$emit('on-jump',id); //跳转
             },
             Go: function(){
                 if(this.jumpPage==''){ //判空处理

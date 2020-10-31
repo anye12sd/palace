@@ -1,11 +1,11 @@
 <template>
-    <div class="list-box flex flexWrap">
+    <div class="list-box flex">
         <template v-for="(item, index) in data.slice(0,3)">
             <router-link tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" class="culture-content-left flex-1" :key="index">
                 <div class="culture-content-box-mask" v-if="item.status != 1">
                     <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
                 </div>
-                <img :src="imgUrl + item.image" alt="">
+                <img :src="imgUrl + item.image" alt="" @error="showErrImg">
                 <p class="culture-content-left-time">{{item.create_time}}</p>
                 <p class="culture-content-left-text">
                     <span class="culture-content-left-text-title">{{item.cate_name}}</span>
@@ -30,6 +30,11 @@
         props: {
             "data": [Array, String],
             "imgUrl": String
+        },
+        methods: {
+            showErrImg(e){
+                e.target.src = 'http://xybcdn.jihui88.net/ykwhg/admin/upload/20201031125004654.jpg'
+            }
         }
     }
 </script>

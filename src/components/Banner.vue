@@ -1,14 +1,15 @@
 <template>
     <div class="banner-box">
         <div class="page-top-banner">
-            <span class="banner-pic" style="background-image: url('/img/banner-03.f9d1a1f2.png')"></span>
+            <span class="banner-pic" :style="'background-image: url('+bannerImg+')'"></span>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Banner"
+        name: "Banner",
+        props: ['bannerImg']
     }
 </script>
 

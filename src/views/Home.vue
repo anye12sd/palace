@@ -173,14 +173,15 @@
                         </div>
                     </div>
                     <div class="contact-home-box flex flexWrap">
-                        <router-link tag="div" :to="{path: 'contact', query:{index: 5}}" class="flex-1">
-                            <img src="../assets/img/img-02.png" alt="">
+                        <router-link tag="div" :to="{path: 'contact', query:{index: 5}}" class="flex-1 hoverDiv">
+                            <img src="../assets/img/img-02.png" alt="" class="contact-home-box-img">
                         </router-link>
-                        <router-link tag="div" :to="{path: 'enroll'}" class="flex-1" style="text-align: center">
-                            <img src="../assets/img/img-03.png" alt="">
+                        <router-link tag="div" :to="{path: 'enroll'}" class="flex-1 hoverDiv" style="text-align: center">
+                            <img src="../assets/img/img-03.png" alt="" class="contact-home-box-img">
                         </router-link>
-                        <div class="flex-1" style="text-align: right">
-                            <img src="../assets/img/img-04.png" alt="">
+                        <div class="flex-1 hoverDiv qrcode-img" style="text-align: right">
+                            <img src="../assets/img/img-04.png" alt="" class="contact-home-box-img">
+                            <img :src="img_path" alt="" class="contact-home-box-qrcode-img">
                         </div>
                     </div>
                 </div>
@@ -204,6 +205,7 @@
                 grid: 0,
                 room: 0,
                 banner: "",
+                img_path: "",
                 recommend: [],
                 menu: [],
                 trendList: [],
@@ -249,6 +251,7 @@
                             this.recommend = data.data.data.recommend
                             sessionStorage.setItem("menu", JSON.stringify(data.data.data.menu))
                             this.menu = data.data.data.menu
+                            this.img_path = data.data.data.img_path + data.data.data.foot.qr_code
                             sessionStorage.setItem("foot", JSON.stringify(data.data.data.foot))
                             sessionStorage.setItem("imgPath", JSON.stringify(data.data.data.img_path))
                             this.fetchList()
@@ -270,7 +273,6 @@
             searchTrend(index, id) {
                 this.trend = index || 0
                 let params = {cate_id: id ? id : this.menu[1].news_cate_id, status: true}
-                console.log(345, params)
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {

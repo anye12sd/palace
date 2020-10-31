@@ -3,6 +3,7 @@
         <div class="header-nav-box flex flexWrap">
             <router-link tag="div" :to="{ path: '/' }" class="header-nav-logo">
                 <img :src="img_path + foot.head_logo" alt="">
+                <div ></div>
             </router-link>
 <!--            <div class="header-nav-ul" @click="getNewsId">-->
             <div class="header-nav-ul" @click="getNewsId">
@@ -33,6 +34,8 @@
                     </router-link>
                     <router-link tag="li" :to="{ path: 'live', query: {news_id: 20} }" :class="{active: istrue == 4}">
                         <span>文化直播</span>
+                        <div class="list-select">
+                        </div>
                     </router-link>
                     <router-link tag="li" :to="{ path: 'showroom', query: {news_id: 21} }"
                                  :class="{active: istrue == 5}">
@@ -41,7 +44,7 @@
                             <router-link tag="div" :to="{ path: 'showroom', query: {news_id: 27} }">场馆展示</router-link>
                         </div>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'contact' }" :class="{active: istrue == 6}">
+                    <router-link tag="li" :to="{ path: 'contact', query: {news_id: 0} }" :class="{active: istrue == 6}">
                         <span>联系我们</span>
                     </router-link>
                     <li class="search-icon" @click="showSearchBar">
@@ -89,10 +92,12 @@
                             if (data.data.code == 0 && data.data.msg == "success") {
                                 console.log(data)
                                 sessionStorage.setItem("menu", JSON.stringify(data.data.data.menu))
+                                sessionStorage.setItem("imgPath", JSON.stringify(data.data.data.img_path))
                                 this.menu = data.data.data.menu
                                 this.img_path = data.data.data.img_path
                                 this.foot = data.data.data.foot
                                 sessionStorage.setItem("foot", JSON.stringify(data.data.data.foot))
+                                sessionStorage.setItem("imgPath", JSON.stringify(data.data.data.img_path))
                             } else {
                                 this.$message.error(data.data.msg)
                             }

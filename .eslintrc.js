@@ -11,6 +11,11 @@ module.exports = {
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
+        "returnCitySN": true,
+        "Vue": true,
+        "axios": true,
+        "moment": true,
+        "antDesignVue": true
     },
     "parserOptions": {
         "ecmaVersion": 2018,

@@ -1,8 +1,8 @@
 <template>
     <div>
         <header-nav istrue="6"></header-nav>
-        <banner></banner>
-        <div class="category-box">
+        <banner v-if="imgFlag" :bannerImg="bannerImg"></banner>
+        <div class="category-box" :class="{ptFlag: !imgFlag}">
             <p class="category-bread-crumb">位置：<router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>-<router-link tag="span" :to="{path: 'contact'}">联系我们</router-link></p>
             <p class="category-title">联系我们</p>
             <div class="contact-box flex flexWrap">
@@ -16,20 +16,20 @@
                     <div class="contact-box-left-text" :class="{active: trend == 7}" @click="toScroll(7)">咨询指导</div>
                 </div>
                 <div class="contact-box-right flex-1" ref="scrollBox">
-                    <div class="contact-box-right-title" ref="scroll1">地理位置</div>
+                    <div class="contact-box-right-title scroll1" ref="scroll1">地理位置</div>
                     <div class="contact-box-right-content">
                         <div id="all-map" class="map"></div>
                         <p class="contact-box-right-content-text">地址：{{foot.address}}</p>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll2">交通指南</div>
+                    <div class="contact-box-right-title scroll2" ref="scroll2">交通指南</div>
                     <div class="contact-box-right-content">
                         <p class="contact-box-right-content-text">{{foot.guide}}</p>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll3">开馆时间</div>
+                    <div class="contact-box-right-title scroll3" ref="scroll3">开馆时间</div>
                     <div class="contact-box-right-content">
                         <p class="contact-box-right-content-text">{{foot.open_time}}</p>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll4">联系方式</div>
+                    <div class="contact-box-right-title scroll4" ref="scroll4">联系方式</div>
                     <div class="contact-box-right-content flex">
                         <div class="qrcode">
                             <img v-if="foot.qr_code && img_path" :src="img_path + foot.qr_code" alt="">
@@ -41,7 +41,7 @@
                             <p>邮箱：{{foot.email}}</p>
                         </div>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll5">场地预约</div>
+                    <div class="contact-box-right-title scroll5" ref="scroll5">场地预约</div>
                     <div class="contact-box-right-content">
                         <form @submit.prevent="submitOrder" class="contact-form">
                             <a-select class="content-input form-select" placeholder="请选择教室" v-model="order.classroom_id">
@@ -60,7 +60,7 @@
                             <input type="submit" class="submit-btn" value="场地预约">
                         </form>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll6">意见建议</div>
+                    <div class="contact-box-right-title scroll6" ref="scroll6">意见建议</div>
                     <div class="contact-box-right-content">
                         <form @submit.prevent="submitAdvice" class="contact-form">
                             <a-input type="text" class="content-input form-input" v-model="advice.person_name" placeholder="请输入您的姓名"/>
@@ -70,7 +70,7 @@
                             <input type="submit" class="submit-btn" value="提交建议">
                         </form>
                     </div>
-                    <div class="contact-box-right-title" ref="scroll7">咨询指导</div>
+                    <div class="contact-box-right-title scroll7" ref="scroll7">咨询指导</div>
                     <div class="contact-box-right-content">
                         <form @submit.prevent="submitGuide" class="contact-form">
                             <a-input type="text" class="content-input form-input" v-model="guide.person_name" placeholder="请输入您的姓名"/>
@@ -106,16 +106,64 @@
                 foot: "",
                 trend: 1,
                 classroomList: [],
-                img_path: ""
+                img_path: "",
+                bannerImg: "",
+                imgFlag: false
             }
         },
         mounted() {
+            // this.getBanner() // 获取banner图
             this.fetch()
             this.GaodeMap()
             this.init()
             this.scroll()
         },
         methods: {
+            getBanner: function () {
+                let news_id = this.$route.query.news_id
+                let imgPath = JSON.parse(sessionStorage.getItem("imgPath"))
+                let menu = JSON.parse(sessionStorage.getItem("menu"))
+                if(menu){
+                    menu = menu.slice(1)
+                }
+                for(let i = 0; i < menu.length; i++){
+                    if( news_id == menu[i].news_cate_id){
+                        if(menu[i].image){
+                            this.bannerImg = imgPath + menu[i].image
+                            this.imgFlag = true
+                            return false
+                        }else{
+                            return false
+                        }
+                    }
+                    if(menu[i].children.length){
+                        let children = menu[i].children
+                        for(let j = 0; j < children.length; j++){
+                            if( news_id == children[j].id){
+                                if(children[j].image){
+                                    this.bannerImg = imgPath + children[j].image
+                                    this.imgFlag = true
+                                    return false
+                                }else{
+                                    return false
+                                }
+                            }
+                        }
+                    }
+                }
+                // let params = {cate_id: 17}
+                // this.$api.getNewsList(params)
+                //     .then((data) => {
+                //         if (data.data.code == 0 && data.data.msg == "success") {
+                //             this.bannerImg = 'http://175.24.135.230:5007/admin/upload/20201022160240332.jpg'
+                //         } else {
+                //             this.$message.error(data.data.msg)
+                //         }
+                //     })
+                //     .catch((err) => {
+                //         console.log(err)
+                //     })
+            },
             fetch() {
                 if (sessionStorage.getItem("foot") == null || sessionStorage.getItem("imgPath") == null) {
                     this.$api.getNewsBase()
@@ -124,6 +172,7 @@
                                 console.log(data)
                                 this.foot = data.data.data.foot
                                 this.img_path = data.data.data.img_path
+                                this.getBanner() // 获取banner图
                                 this.GaodeMap()
                             } else {
                                 this.$message.error(data.data.msg)
@@ -159,7 +208,11 @@
             },
             init: function () {
                 let top = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-                let boxTop = $(".contact-box").offset().top + top - 165
+                let diff = -165
+                if(this.imgFlag){
+                    diff = 95
+                }
+                let boxTop = $(".contact-box").offset().top + top + diff
                 if (top > boxTop) {
                     $(".contact-box-left").css({"position": "fixed", "top": "165px"})
                 }
@@ -170,6 +223,7 @@
                     } else {
                         $(".contact-box-left").css({"position": "absolute", "top": "inherit"})
                     }
+
                 })
             },
             submitOrder: function () {
@@ -295,7 +349,6 @@
             toScroll(index) {
                 this.trend = index
                 let top = this.$refs['scroll' + index].offsetTop - 150 + "px"
-                console.log(top)
                 $("html,body").animate({scrollTop: top}, 500)
             },
         }

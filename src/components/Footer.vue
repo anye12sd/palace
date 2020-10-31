@@ -31,6 +31,7 @@
             </div>
         </div>
         <div class="copyright">
+            <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
             <span>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</span>
             <span>{{foot.company_name}}版权所有</span>
             <span>浙ICP证{{foot.foot_icp}}号</span>
@@ -41,7 +42,6 @@
                     <p style="display: inline-block">浙公网安备 {{foot.foot_wangan}}号</p>
                 </a>
             </span>
-            <span style="float: right"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
             <div style="clear: both"></div>
         </div>
     </div>
@@ -69,7 +69,9 @@
                                 sessionStorage.setItem("menu", JSON.stringify(data.data.data.menu))
                                 this.foot = data.data.data.foot
                                 this.img_path = data.data.data.img_path
+                                sessionStorage.setItem("imgPath", JSON.stringify(data.data.data.img_path))
                                 sessionStorage.setItem("foot", JSON.stringify(data.data.data.foot))
+                                sessionStorage.setItem("imgPath", JSON.stringify(data.data.data.img_path))
                             } else {
                                 this.$message.error(data.data.msg)
                             }

@@ -1,9 +1,13 @@
 const configureWebpack = {
     externals: {
+        "vue": "Vue",
         "AMap": "AMap",
+        'moment': 'moment',
+        'ant-design-vue': 'antDesignVue'
     },
 };
 module.exports = {
+    productionSourceMap: false,
     configureWebpack,
     publicPath: process.env.NODE_ENV === 'production'
         ? '' : '/',

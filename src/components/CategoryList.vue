@@ -16,7 +16,7 @@
                         <div class="culture-content-box-mask" v-if="item.status != 1">
                             <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
                         </div>
-                        <img :src="list.img_path + item.image" alt="">
+                        <img :src="list.img_path + item.image" alt="" @error="showErrImg">
                         <p class="culture-content-left-time">{{item.create_time}}</p>
                         <p class="culture-content-left-text">
                             <span class="culture-content-left-text-title">{{item.cate_name}}</span>
@@ -26,7 +26,7 @@
                 </template>
             </div>
         </template>
-        <pager :total="list.total" :pageSize="pageSize" v-model="pageNo" @on-jump="jump"></pager>
+        <pagers :total="list.total" :pageSize="list.total_page" v-model="pageNo" @jumpPage="jump"></pagers>
     </div>
 </template>
 
@@ -44,12 +44,15 @@
             }
         },
         mounted() {
-            this.pageSize = this.list.total_page
+
         },
         methods: {
             jump(id) {
-                console.log(id)
+                this.$emit('jump', id)
             },
+            showErrImg(e){
+                e.target.src = 'http://xybcdn.jihui88.net/ykwhg/admin/upload/20201031125004654.jpg'
+            }
         }
     }
 </script>
