@@ -27,6 +27,8 @@ export const getNewsBase = () => fetchGet('/base');
 export const getNewsDetail = params => fetchGet('/news_detail', params);
 // 点赞
 export const postLikes = params => fetchPost('/likes', params);
+// 访客统计
+export const postVisits = params => fetchPost('/visits', params);
 // 获取课程列表
 export const getCourse = params => fetchGet('/course', params);
 // 获取课程分类

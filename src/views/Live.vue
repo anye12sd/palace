@@ -1,9 +1,10 @@
 <template>
     <div>
-        <header-nav istrue="4" @newsId="getNewsId"></header-nav>
+        <header-nav istrue="20" @newsId="getNewsId"></header-nav>
         <banner v-if="imgFlag" :bannerImg="bannerImg"></banner>
         <div class="category-box" :class="{ptFlag: !imgFlag}">
-            <p class="category-bread-crumb">位置：
+            <p v-if="!isMobile" class="category-bread-crumb">
+                位置：
                 <router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>
                 -
                 <router-link tag="span" :to="{path: 'live?news_id=20'}">文化直播</router-link>
@@ -13,15 +14,17 @@
                         {{list.list[0].cate_name}}</router-link>
                 </template>
             </p>
-            <template v-if="list.cate">
-                <p class="category-title">文化直播</p>
+            <template>
+                <template v-if="list.cate">
+                    <p class="category-title">文化直播</p>
+                </template>
+                <template v-else>
+                    <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
+                </template>
             </template>
-            <template v-else>
-                <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
-            </template>
-            <category-list :list="list" type="video" @jump="getNewsPage"></category-list>
+            <category-list :is-mobile="isMobile" :list="list" type="video" @jump="getNewsPage"></category-list>
         </div>
-        <Footer></Footer>
+        <Footer :is-mobile="isMobile"></Footer>
     </div>
 </template>
 
@@ -31,16 +34,43 @@
         data() {
             return {
                 newsId: "",
+                originWidth: 1,
                 list: "",
                 bannerImg: "",
                 imgFlag: false,
                 pageSize: 9,
-                pageNum: 1
+                pageNum: 1,
+                timer: false,
+                isMobile: false
+            }
+        },
+        watch: {
+            $route() {
+                this.getBanner();
+                this.getNewsId()
             }
         },
         mounted() {
             this.getBanner()
             this.getNewsId()
+            if(document.body.clientWidth <= 768){
+                this.isMobile = true
+            }
+            this.originWidth = document.body.clientWidth
+            let that = this
+            window.onresize = function(){ // 定义窗口大小变更通知事件
+                if(!that.timer) {
+                    that.timer = true
+                    setTimeout(function () {
+                        that.timer = false
+                        if(document.body.clientWidth <= 768){
+                            that.originWidth <= 768 ? console.log("不要随便resize哦~") : location.reload()
+                        }else{
+                            that.originWidth > 768 ? console.log("不要随便resize哦~") : location.reload()
+                        }
+                    }, 1000)
+                }
+            };
         },
         methods: {
             getBanner: function(){

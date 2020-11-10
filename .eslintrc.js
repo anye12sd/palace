@@ -15,7 +15,8 @@ module.exports = {
         "Vue": true,
         "axios": true,
         "moment": true,
-        "antDesignVue": true
+        "antDesignVue": true,
+        "$": true
     },
     "parserOptions": {
         "ecmaVersion": 2018,

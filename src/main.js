@@ -13,7 +13,7 @@ import api from './api/index'
 // Vue.use(Modal).use(Button).use(Tabs).use(Icon).use(Input).use(Select).use(DatePicker)
 
 //引入全局css
-import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.css'
 import './assets/css/main.css'
 import './assets/css/reset.css'
 import 'swiper/dist/css/swiper.min.css'
@@ -42,6 +42,9 @@ router.beforeEach((to, from, next) => {
   document.documentElement.scrollTop = 0
 // safari
   window.pageYOffset = 0
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
   next()
 })
 

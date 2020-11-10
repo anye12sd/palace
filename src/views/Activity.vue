@@ -1,9 +1,10 @@
 <template>
     <div>
-        <header-nav istrue="2" @newsId="getNewsId"></header-nav>
+        <header-nav istrue="18" @newsId="getNewsId"></header-nav>
         <banner v-if="imgFlag" :bannerImg="bannerImg"></banner>
         <div class="category-box" :class="{ptFlag: !imgFlag}">
-            <p class="category-bread-crumb">位置：
+            <p v-if="!isMobile" class="category-bread-crumb">
+                位置：
                 <router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>
                 -
                 <router-link tag="span" :to="{path: 'activity?news_id=18'}">文化活动</router-link>
@@ -13,15 +14,17 @@
                         {{list.list[0].cate_name}}</router-link>
                 </template>
             </p>
-            <template v-if="list.cate">
-                <p class="category-title">文化活动</p>
+            <template>
+                <template v-if="list.cate">
+                    <p class="category-title">文化活动</p>
+                </template>
+                <template v-else>
+                    <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
+                </template>
             </template>
-            <template v-else>
-                <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
-            </template>
-            <category-list :list="list" type="video" @jump="getNewsPage"></category-list>
+            <category-list :isMobile="isMobile" :list="list" type="video" @jump="getNewsPage"></category-list>
         </div>
-        <Footer></Footer>
+        <Footer :is-mobile="isMobile"></Footer>
     </div>
 </template>
 
@@ -34,13 +37,40 @@
                 list: "",
                 bannerImg: "",
                 pageSize: 9,
+                originWidth: 1,
                 pageNum: 1,
-                imgFlag: false
+                timer: false,
+                imgFlag: false,
+                isMobile: false
+            }
+        },
+        watch: {
+            $route() {
+                this.getBanner();
+                this.getNewsId()
             }
         },
         mounted() {
             this.getNewsId()
             this.getBanner()
+            if(document.body.clientWidth <= 768){
+                this.isMobile = true
+            }
+            this.originWidth = document.body.clientWidth
+            let that = this
+            window.onresize = function(){ // 定义窗口大小变更通知事件
+                if(!that.timer) {
+                    that.timer = true
+                    setTimeout(function () {
+                        that.timer = false
+                        if(document.body.clientWidth <= 768){
+                            that.originWidth <= 768 ? console.log("不要随便resize哦~") : location.reload()
+                        }else{
+                            that.originWidth > 768 ? console.log("不要随便resize哦~") : location.reload()
+                        }
+                    }, 1000)
+                }
+            };
         },
         methods: {
             getBanner: function(){
@@ -95,7 +125,7 @@
                         if (data.data.code == 0 && data.data.msg == "success") {
                             console.log(data)
                             if (!data.data.data.list.length) {
-                                this.$message.error("该目录下暂无内容，敬请期待")
+                                this.$message.error("该目录下暂无内容，敬请期待", 2)
                                 return false
                             }
                             this.list = data.data.data

@@ -3,7 +3,8 @@ const configureWebpack = {
         "vue": "Vue",
         "AMap": "AMap",
         'moment': 'moment',
-        'ant-design-vue': 'antDesignVue'
+        'ant-design-vue': 'antDesignVue',
+        'jquery': '$'
     },
 };
 module.exports = {

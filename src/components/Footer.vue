@@ -4,7 +4,7 @@
             <div class="footer-logo">
                 <img :src="img_path + foot.foot_logo" alt="">
             </div>
-            <div class="footer-nav-ul">
+            <div v-if="!isMobile" class="footer-nav-ul">
                 <ul class="nav-ul flex">
                     <router-link tag="li" :to="{ path: '/' }">
                         <span>文化馆首页</span>
@@ -30,30 +30,51 @@
                 </ul>
             </div>
         </div>
-        <div class="copyright">
-            <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
-            <span>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</span>
-            <span>{{foot.company_name}}版权所有</span>
-            <span>浙ICP证{{foot.foot_icp}}号</span>
-            <span style="width: 100%">
+        <template v-if="!isMobile">
+            <div class="copyright">
+                <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
+                <span>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</span>
+                <span>{{foot.company_name}}版权所有</span>
+                <span>浙ICP证{{foot.foot_icp}}号</span>
+                <span style="width: 100%">
                 <a target="_blank" :href="foot.foot_wangan_link"
                    style="display:inline-block;text-decoration:none;color: inherit">
                     <img src="https://www.jihui88.com/resource_j/35bf7990-32df-4549-8389-0d6eb4ac9f36.png" style="margin-right: 8px"/>
                     <p style="display: inline-block">浙公网安备 {{foot.foot_wangan}}号</p>
                 </a>
             </span>
-            <div style="clear: both"></div>
-        </div>
+                <div style="clear: both"></div>
+            </div>
+        </template>
+        <template v-else>
+            <div class="copyright">
+<!--                <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>-->
+                <p>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</p>
+                <p>{{foot.company_name}}版权所有</p>
+                <span v-if="foot.foot_icp">浙ICP证{{foot.foot_icp}}号</span>
+                <span style="width: 100%">
+                    <a target="_blank" :href="foot.foot_wangan_link" style="display:inline-block;text-decoration:none;color: inherit">
+                        <p style="display: inline-block">浙公网安备 {{foot.foot_wangan}}号</p>
+                        <img src="https://www.jihui88.com/resource_j/35bf7990-32df-4549-8389-0d6eb4ac9f36.png" style="margin-left: 8px; vertical-align: sub"/>
+                    </a>
+                </span>
+                <div style="clear: both"></div>
+            </div>
+        </template>
     </div>
 </template>
 
 <script>
     export default {
         name: "Footer",
+        props: {
+            isMobile: Boolean
+        },
         data() {
             return {
                 foot: "",
-                img_path: ""
+                img_path: "",
+                timer: false
             }
         },
         mounted() {
