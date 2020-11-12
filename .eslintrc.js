@@ -12,6 +12,7 @@ module.exports = {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "returnCitySN": true,
+        "Txplayer": true,
         "Vue": true,
         "axios": true,
         "moment": true,

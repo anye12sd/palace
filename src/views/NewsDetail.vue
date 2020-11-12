@@ -15,10 +15,14 @@
                 </p>
                 <template v-if="dataDetail.status == 2 || dataDetail.status == 3">
                     <div class="news-video-box">
+<!--                        <div v-if="dataDetail.status == 2" class="news-video-box-a">-->
                         <a v-if="dataDetail.status == 2" :href="dataDetail.video" target="_blank" class="news-video-box-a">
-                            <div class="news-video-box-mask">
+                            <div v-if="videoPause" class="news-video-box-mask">
                                 <img src="../assets/img/video.png" alt="">
                             </div>
+<!--                            <div v-else class="videoPlay">-->
+<!--                                <div id="container" class="video-wrapper"></div>-->
+<!--                            </div>-->
                             <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt="" class="news-video-box-img" @error="showErrImg">
                         </a>
                         <a v-else :href="dataDetail.live" target="_blank" class="news-video-box-a">
@@ -334,6 +338,7 @@
                 shareBox: false,
                 qrcodeImg: "",
                 ip: "",
+                videoPause: true,
                 timer: false,
                 isMobile: false
             }
@@ -342,6 +347,7 @@
             this.fetch()
             this.qrcodeScan();
             // this.getNewsId() // 获取banner图
+            // this.initVideo(); // 加载视频
             if(document.body.clientWidth <= 768){
                 this.isMobile = true
             }
@@ -368,9 +374,18 @@
             }
         },
         methods: {
+            // initVideo(src){
+            //     let videoSrc = src.split("vid=")[1]
+            //     var player = new Txplayer({
+            //         containerId: 'container',
+            //         vid: videoSrc,
+            //         width: '100%',
+            //         height: '590px'
+            //     });
+            // },
             getImgWidth(){
-                this.imgWidth.swiperImg = '?imageView2/5/w/1186/h/500'
-                this.imgWidth.contentImg = '?imageView2/5/w/450/h/340'
+                this.imgWidth.swiperImg = '!/both/1186x500'
+                this.imgWidth.contentImg = '!/both/450x340'
             },
             getBanner: function (id) {
                 // let cate_id, cate_parent_id
@@ -501,6 +516,9 @@
                                 this.getRelation(data.data.data.detail.cate_id)
                             }
                             if (this.dataDetail.status == 2 || this.dataDetail.status == 3) {
+                                // if(this.dataDetail.video){
+                                //     this.initVideo(this.dataDetail.video)
+                                // }
                                 this.catalog = this.dataDetail.catalog
                                 this.catalogContent = this.dataDetail.catalog_content
                             }

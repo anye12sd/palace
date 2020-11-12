@@ -317,8 +317,8 @@
         },
         methods: {
             getImgWidth(){
-                this.imgWidth.swiperImg = '?imageView2/5/w/1400/h/620'
-                this.imgWidth.contentImg = '?imageView2/5/w/450/h/340'
+                this.imgWidth.swiperImg = '!/both/1400x620'
+                this.imgWidth.contentImg = '!/both/450x340'
             },
             fetch: function () {
                 this.$api.getBanner()

@@ -5,7 +5,7 @@
         <div class="category-box">
             <p v-if="!isMobile" class="category-bread-crumb">位置：文化馆首页-搜索列表</p>
             <p class="category-title">搜索列表</p>
-            <category-list :isMobile="isMobile" :list="list" type="list"></category-list>
+            <category-list :isMobile="isMobile" :list="list" type="list" @jump="fetch"></category-list>
         </div>
         <Footer :is-mobile="isMobile"></Footer>
     </div>
@@ -18,6 +18,7 @@
             return {
                 newsId: "",
                 originWidth: 1,
+                page: 1,
                 list: "",
                 bannerImg: "",
                 timer: false,
@@ -51,8 +52,8 @@
             };
         },
         methods: {
-            fetch: function(){
-                let params = {key_words: this.$route.query.text}
+            fetch: function(page){
+                let params = {key_words: this.$route.query.text, page: page || this.page}
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {

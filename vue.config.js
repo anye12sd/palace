@@ -11,8 +11,8 @@ module.exports = {
     productionSourceMap: false,
     configureWebpack,
     publicPath: process.env.NODE_ENV === 'production'
-        ? '' : '/',
-        // : process.env.NODE_ENV === 'test' ? '' : '/',
+        ? ''
+        : process.env.NODE_ENV === 'test' ? '' : '/',
     devServer: {
         disableHostCheck: true,
         proxy: {

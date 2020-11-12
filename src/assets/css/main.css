@@ -828,6 +828,10 @@
         left: 636px;
         top: 231px;
     }
+    .videoPlay{
+        width: 1400px;
+        height: 590px;
+    }
     .operate{
         font-size: 18px;
         color: #191919;
@@ -2840,7 +2844,7 @@
         width: 100%;
         padding: 0 15px;
         margin: 0 auto;
-        min-height: calc(100vh - 256px);
+        min-height: calc(100vh - 430px);
     }
     .ptFlag{
         padding-top: 50px;
@@ -2897,7 +2901,7 @@
         margin-top: 0;
     }
     .list-box-1{
-        min-height: calc(100vh - 348px);
+
     }
     .list-title{
         color: #74bd00;

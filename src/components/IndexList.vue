@@ -8,7 +8,7 @@
                         <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
                     </div>
                     <template v-if="item.cate_id == 25 || item.cate_id == 26">
-                        <img :src="imgUrl + item.image + '?imageView2/5/w/450/h/250'" alt="" @error="showErrImg">
+                        <img :src="imgUrl + item.image + '!/both/450x250'" alt="" @error="showErrImg">
                     </template>
                     <template v-else>
                         <img :src="imgUrl + item.image + contentImg" alt="" @error="showErrImg">

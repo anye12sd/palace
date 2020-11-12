@@ -69,13 +69,13 @@
 <!--                        <div class="list-select">-->
 <!--                        </div>-->
                     </router-link>
-                    <li v-if="!isMobile" class="search-icon" @click="showSearchBar">
+                    <li v-if="!isMobile" class="search-icon" @click.stop="showSearchBar">
                         <a-icon v-if="showBar" type="search"/>
                         <a-icon v-else type="close"/>
                     </li>
                 </ul>
-                <div v-if="!isMobile" class="search-bar">
-                    <div class="search-text">搜索</div>
+                <div v-if="!isMobile" class="search-bar" @click.stop="a" >
+<!--                    <div class="search-text">搜索</div>-->
                     <a-input placeholder="请输入搜索内容" v-model="search" @pressEnter="searchContent"/>
                     <div class="search-bar-search-btn" @click="searchContent">搜索</div>
                 </div>

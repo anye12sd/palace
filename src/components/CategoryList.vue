@@ -84,7 +84,7 @@
         data() {
             return {
                 imgWidth:{
-                    contentImg: "?imageView2/5/w/450/h/340"
+                    contentImg: "!/both/450x340"
                 },
                 pageSize: 10,
                 pageNo: 1,
@@ -99,9 +99,9 @@
                 let width = document.body.clientWidth
                 if(width > 1440){
                     // 媒体查询大于1440屏幕
-                    this.imgWidth.contentImg = '?imageView2/5/w/450/h/340'
+                    this.imgWidth.contentImg = '!/both/450x340'
                 }else if(width > 768){
-                    this.imgWidth.contentImg = '?imageView2/5/w/450/h/340'
+                    this.imgWidth.contentImg = '!/both/450x340'
                 }
             },
             jump(id) {

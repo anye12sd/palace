@@ -36,9 +36,9 @@ export const getCourseTree = () => fetchGet('/course_tree');
 // 报名提交
 export const postCourse = params => fetchPost('/course', params);
 // 修改报名课程
-export const putCourse = (data, params) => fetchPut('/user/sign_edit/' + data,  params);
+export const putCourse = (data, params) => fetchPost('/user/sign_edit/' + data,  params);
 // 课程取消
-export const delCourse = params => fetchDel('/user/sign_del/'+ params);
+export const delCourse = params => fetchPost('/user/sign_del/'+ params);
 // 用户登录
 export const postLogin = params => fetchPost('/login', params);
 // 获取已报名的数据
