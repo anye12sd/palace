@@ -42,7 +42,7 @@
                         </div>
                     </router-link>
                     <router-link tag="li" :to="{ path: 'grid', query: {news_id: 19} }" :class="{active: istrue == 19}">
-                        <span>文化网格</span>
+                        <span>文化普及</span>
                         <div v-if="isMobile" class="header-nav-ul-li-menu" @click.stop="showMenu"></div>
                         <div :class="{'list-select': !isMobile, 'list-select-mobile': isMobile}">
                             <router-link tag="div" :to="{ path: 'grid', query: {news_id: 25} }">线上培训</router-link>

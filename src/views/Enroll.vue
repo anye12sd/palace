@@ -1,11 +1,10 @@
 <template>
     <div class="enroll-outbox">
-        <header-nav istrue="2"></header-nav>
         <template v-if="!isMobile">
             <div class="enroll-box">
                 <div class="enroll-banner">
                     <div class="enroll-banner-box flex flexWrap">
-                        <div class="enroll-bread">位置：<router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>-课程报名</div>
+                        <div class="enroll-box-title">（报名须知：一个年度每人限报两个项目）</div>
                         <div v-if="loginFlag" class="enroll-banner-btn-check" @click="toLogin">我已经报名，查看报名记录</div>
                         <div v-else>
                             <template v-if="loginInputFlag">
@@ -36,124 +35,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="enroll-list">
-                    <div class="enroll-list-header" v-if="enrolled">
-                        <div class="enroll-list-title1">
-                            报名须知
+                <div v-if="changeCourse" class="course-category flex">
+                    <div :class="{'active': 0 == courseActiveId}" @click="fetch('')">全部</div>
+                    <template v-for="(item, index) in allCourse">
+                        <div :key="index" :class="{'active': item.id == courseActiveId}" @click="fetch(item.id)">{{item.category_name}}</div>
+                    </template>
+                </div>
+                <div class="enroll-list flex flexWrap">
+                    <template v-for="(item, index) in courseList">
+                        <div :key="index" class="culture-content-left enroll-list-table flex-1">
+                            <img :src="img_path + item.image[0] + '!/both/450x340'" alt="" @error="showErrImg">
+<!--                            <img src="x" alt="" @error="showErrImg">-->
+                            <p class="culture-content-left-time">{{item.time}}</p>
+                            <p class="culture-content-left-text">
+                                <span class="culture-content-left-text-title">{{item.category_name}}</span>
+                                <span class="culture-content-left-text-content">{{item.title}}</span>
+                            </p>
+                            <p class="culture-content-left-teacher">
+                                老师：{{item.teacher}}
+                            </p>
+                            <p v-if="item.age" class="culture-content-left-teacher">
+                                年龄要求：{{item.age.split(",")[0] +'-'+ item.age.split(",")[1]}}岁；课时{{item.times}}次
+                            </p>
+                            <p class="culture-content-left-teacher">
+                                上课教室：{{item.classroom}}
+                            </p>
+                            <template v-if="changeCourse">
+                                <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title)">
+                                    立即报名
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="enroll-btn-box flex">
+                                    <div class="enroll-btn" @click="reEnrollCourseModal(item.id)">
+                                        修改报名课程
+                                    </div>
+                                    <div class="enroll-btn-danger" @click="cancelCourse(item.id,index)">
+                                        取消报名
+                                    </div>
+                                </div>
+                            </template>
                         </div>
-                        <div class="enroll-list-title2">
-                            一个年度每人限报两个项目
-                        </div>
-                    </div>
-                    <div class="enroll-table">
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <thead>
-                            <tr class="enroll-table-header">
-                                <td v-if="enrolled">
-                                    <div class="enroll-table-th-cell">
-                                        序号
-                                    </div>
-                                </td>
-                                <td v-if="enrolled">
-                                    <div class="enroll-table-th-cell">
-                                        课程分类
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        课程名称
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        老师
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        上课时间
-                                    </div>
-                                </td>
-                                <td v-if="enrolled">
-                                    <div class="enroll-table-th-cell">
-                                        年龄要求
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        课时
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        上课教室
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr class="enroll-table-content" v-for="(item, index) in courseList" :key="index">
-                                <td v-if="enrolled">
-                                    <div class="enroll-table-th-cell">
-                                        {{index + 1}}
-                                    </div>
-                                </td>
-                                <td v-if="enrolled">
-                                    <div class="enroll-table-th-cell">
-                                        {{item.category_name}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        {{item.title}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        {{item.teacher}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        {{item.time}}
-                                    </div>
-                                </td>
-                                <td v-if="enrolled && item.age">
-                                    <div class="enroll-table-th-cell">
-                                        {{item.age.split(",")[0] + '-' + item.age.split(",")[1] + '岁'}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        {{item.times + '次'}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="enroll-table-th-cell">
-                                        {{item.classroom}}
-                                    </div>
-                                </td>
-                                <td class="width20">
-                                    <div class="enroll-table-th-cell">
-                                        <button v-if="changeCourse" class="enroll-btn"
-                                                @click="toEnroll(item.category_id,item.id,item.title)">
-                                            立即报名
-                                        </button>
-                                        <template v-else>
-                                            <button v-if="item.status == 2" class="enroll-btn"
-                                                    @click="reEnrollCourseModal(item.id)">
-                                                修改报名课程
-                                            </button>
-                                            <button class="enroll-btn enroll-btn-danger"
-                                                    @click="cancelCourse(item.id,index)">
-                                                取消报名
-                                            </button>
-                                        </template>
-                                    </div>
-                                </td>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
+                    </template>
                 </div>
             </div>
         </template>
@@ -161,7 +84,6 @@
             <div class="enroll-box">
                 <div class="enroll-banner">
                     <div class="enroll-banner-box flex flexWrap">
-                        <div class=""></div>
                         <div v-if="loginFlag" class="enroll-banner-btn-check" @click="toLogin">我已经报名，查看报名记录</div>
                         <div v-else>
                             <template v-if="loginInputFlag">
@@ -198,63 +120,96 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="!changeCourse" class="enroll-box-title">（报名须知：一个年度每人限报两个项目）</div>
+                <div v-if="changeCourse" class="course-category flex flexWrap">
+                    <div :class="{'active': 0 == courseActiveId}" @click="fetch('')">全部</div>
+                    <template v-for="(item, index) in allCourse">
+                        <div :key="index" :class="{'active': item.id == courseActiveId}" @click="fetch(item.id)">{{item.category_name}}</div>
+                    </template>
+                </div>
                 <div class="enroll-list">
-                    <div class="enroll-list-header" v-if="enrolled">
-                        <div class="enroll-list-title1">
-                            报名须知
-                        </div>
-                        <div class="enroll-list-title2">
-                            一个年度每人限报两个项目
-                        </div>
-                    </div>
                     <div class="enroll-table">
                         <div class="enroll-mobile-list-box">
+<!--                            <template v-for="(item, index) in courseList">-->
+<!--                                <div :key="index" class="enroll-mobile-list-out">-->
+<!--                                    <div class="enroll-mobile-list-show flex flexWrap">-->
+<!--                                        <div class="class-info" @click="showClassDetail">-->
+<!--                                            <div class="class-info-name">{{item.title}}</div>-->
+<!--                                            <div class="class-info-teacher-name">{{item.teacher}}</div>-->
+<!--                                        </div>-->
+<!--                                        <div v-if="changeCourse" class="class-enroll-btn flex flexWrap">-->
+<!--                                            <div class="class-enroll" @click="toEnroll(item.category_id,item.id,item.title)">立即报名</div>-->
+<!--                                            <div class="class-showDetail" @click="showClassDetail"></div>-->
+<!--                                        </div>-->
+<!--                                        <template v-else>-->
+<!--                                            <button v-if="item.status == 2" class="enroll-btn"-->
+<!--                                                    @click="reEnrollCourseModal(item.id)">-->
+<!--                                                修改报名课程-->
+<!--                                            </button>-->
+<!--                                            <button class="enroll-btn enroll-btn-danger"-->
+<!--                                                    @click="cancelCourse(item.id,index)">-->
+<!--                                                取消报名-->
+<!--                                            </button>-->
+<!--                                        </template>-->
+<!--                                    </div>-->
+<!--                                    <div class="enroll-mobile-list-hide" :key="index">-->
+<!--                                        <div class="flex flexWrap">-->
+<!--                                            <div class="enroll-mobile-list-detail">-->
+<!--                                                <span class="enroll-mobile-list-detail-name">课程分类</span>-->
+<!--                                                <span class="enroll-mobile-list-detail-content">{{item.category_name}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="enroll-mobile-list-detail">-->
+<!--                                                <span class="enroll-mobile-list-detail-name">上课时间</span>-->
+<!--                                                <span class="enroll-mobile-list-detail-content">{{item.time}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div v-if="enrolled && item.age" class="enroll-mobile-list-detail">-->
+<!--                                                <span class="enroll-mobile-list-detail-name">年龄要求</span>-->
+<!--                                                <span class="enroll-mobile-list-detail-content">{{item.age.split(",")[0] + '-' + item.age.split(",")[1] + '岁'}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="enroll-mobile-list-detail">-->
+<!--                                                <span class="enroll-mobile-list-detail-name">课时</span>-->
+<!--                                                <span class="enroll-mobile-list-detail-content">{{item.times}}</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="enroll-mobile-list-detail">-->
+<!--                                                <span class="enroll-mobile-list-detail-name">上课教室</span>-->
+<!--                                                <span class="enroll-mobile-list-detail-content">{{item.classroom}}</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </template>-->
                             <template v-for="(item, index) in courseList">
-                                <div :key="index" class="enroll-mobile-list-out">
-                                    <div class="enroll-mobile-list-show flex flexWrap">
-                                        <div class="class-info" @click="showClassDetail">
-                                            <div class="class-info-name">{{item.title}}</div>
-                                            <div class="class-info-teacher-name">{{item.teacher}}</div>
+                                <div :key="index" class="culture-content-left enroll-list-table flex-1">
+                                    <img :src="img_path + item.image[0] + '!/both/450x340'" alt="" @error="showErrImg">
+                                    <p class="culture-content-left-time">{{item.time}}</p>
+                                    <p class="culture-content-left-text flex">
+                                        <span class="culture-content-left-text-title">{{item.category_name}}</span>
+                                        <span class="culture-content-left-text-content">{{item.title}}</span>
+                                    </p>
+                                    <p class="culture-content-left-teacher">
+                                        老师：{{item.teacher}}
+                                    </p>
+                                    <p v-if="item.age" class="culture-content-left-teacher">
+                                        年龄要求：{{item.age.split(",")[0] +'-'+ item.age.split(",")[1]}}岁；课时{{item.times}}次
+                                    </p>
+                                    <p class="culture-content-left-teacher">
+                                        上课教室：{{item.classroom}}
+                                    </p>
+                                    <template v-if="changeCourse">
+                                        <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title)">
+                                            立即报名
                                         </div>
-                                        <div v-if="changeCourse" class="class-enroll-btn flex flexWrap">
-                                            <div class="class-enroll" @click="toEnroll(item.category_id,item.id,item.title)">立即报名</div>
-                                            <div class="class-showDetail" @click="showClassDetail"></div>
-                                        </div>
-                                        <template v-else>
-                                            <button v-if="item.status == 2" class="enroll-btn"
-                                                    @click="reEnrollCourseModal(item.id)">
+                                    </template>
+                                    <template v-else>
+                                        <div class="enroll-btn-box flex">
+                                            <div class="enroll-btn" @click="reEnrollCourseModal(item.id)">
                                                 修改报名课程
-                                            </button>
-                                            <button class="enroll-btn enroll-btn-danger"
-                                                    @click="cancelCourse(item.id,index)">
+                                            </div>
+                                            <div class="enroll-btn-danger" @click="cancelCourse(item.id,index)">
                                                 取消报名
-                                            </button>
-                                        </template>
-                                    </div>
-                                    <div class="enroll-mobile-list-hide" :key="index">
-                                        <div class="flex flexWrap">
-                                            <div class="enroll-mobile-list-detail">
-                                                <span class="enroll-mobile-list-detail-name">课程分类</span>
-                                                <span class="enroll-mobile-list-detail-content">{{item.category_name}}</span>
-                                            </div>
-                                            <div class="enroll-mobile-list-detail">
-                                                <span class="enroll-mobile-list-detail-name">上课时间</span>
-                                                <span class="enroll-mobile-list-detail-content">{{item.time}}</span>
-                                            </div>
-                                            <div v-if="enrolled && item.age" class="enroll-mobile-list-detail">
-                                                <span class="enroll-mobile-list-detail-name">年龄要求</span>
-                                                <span class="enroll-mobile-list-detail-content">{{item.age.split(",")[0] + '-' + item.age.split(",")[1] + '岁'}}</span>
-                                            </div>
-                                            <div class="enroll-mobile-list-detail">
-                                                <span class="enroll-mobile-list-detail-name">课时</span>
-                                                <span class="enroll-mobile-list-detail-content">{{item.times}}</span>
-                                            </div>
-                                            <div class="enroll-mobile-list-detail">
-                                                <span class="enroll-mobile-list-detail-name">上课教室</span>
-                                                <span class="enroll-mobile-list-detail-content">{{item.classroom}}</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </template>
                         </div>
@@ -351,7 +306,6 @@
                 </a-modal>
             </div>
         </div>
-        <Footer :is-mobile="isMobile"></Footer>
     </div>
 </template>
 
@@ -367,18 +321,19 @@
                     category_id: "",
                     course_id: "",
                     title: "",
-                    full_name: "",
-                    mobile: "",
-                    id_card: "",
+                    full_name: "东方五金网测试",
+                    mobile: "13758283376",
+                    id_card: "330722199403254018",
                     short_code: "",
                     education: "",
                     address: "",
                 },
                 login: {
-                    mobile: "",
-                    id_card: ""
+                    mobile: "13758283376",
+                    id_card: "330722199403254018"
                 },
                 courseList: [],
+                img_path: "",
                 originWidth: 1,
                 allCourse: [],
                 enrollId: "",
@@ -393,6 +348,7 @@
                 setTimer: "",
                 timer: false,
                 isMobile: false,
+                courseActiveId: 0
             }
         },
         mounted() {
@@ -417,13 +373,20 @@
             };
         },
         methods: {
-            fetch() {
+            fetch(id) {
+                this.courseActiveId = 0
                 let params = {is_close_page: 1}
+                if(id){
+                    params.category_id = id;
+                    this.courseActiveId = id
+                }
                 this.$api.getCourse(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
                             console.log(data)
+                            this.img_path = data.data.data.img_path
                             this.courseList = data.data.data.list
+                            this.getAllCourse()
                         } else {
                             this.$message.error(data.data.msg)
                         }
@@ -618,6 +581,9 @@
             showClassDetail(e) {
                 $(e.target).parents(".enroll-mobile-list-out").children(".enroll-mobile-list-hide").slideToggle()
                 $(e.target).parents(".enroll-mobile-list-out").find(".class-showDetail").toggleClass("class-hideDetail")
+            },
+            showErrImg(e){
+                e.target.src = require('@/assets/img/default.jpg')
             }
         }
     }

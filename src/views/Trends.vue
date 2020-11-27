@@ -10,13 +10,17 @@
                 <router-link tag="span" :to="{path: 'trends?news_id=17'}">文化动态</router-link>
                 <template v-if="!list.cate">
                     -
-                    <router-link v-if="list.list" tag="span" :to="{path: 'grid?news_id=' + list.list[0].cate_id}">
+                    <router-link v-if="list.list" tag="span" :to="{path: 'trends?news_id=' + list.list[0].cate_id}">
                         {{list.list[0].cate_name}}</router-link>
                 </template>
             </p>
             <template>
                 <template v-if="list.cate">
-                    <p class="category-title">文化动态</p>
+                    <p class="category-title">文化动态
+                        <template v-for="(item,index) in list.cate">
+                            <router-link :key="index" tag="span" :to="{path: trends, query: {news_id: item.id}}">{{item.title}}</router-link>
+                        </template>
+                    </p>
                 </template>
                 <template v-else>
                     <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>

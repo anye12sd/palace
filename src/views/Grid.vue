@@ -7,7 +7,7 @@
                 位置：
                 <router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>
                 -
-                <router-link tag="span" :to="{path: 'grid?news_id=19'}">文化网格</router-link>
+                <router-link tag="span" :to="{path: 'grid?news_id=19'}">文化普及</router-link>
                 <template v-if="!list.cate">
                     -
                     <router-link v-if="list.list" tag="span" :to="{path: 'grid?news_id=' + list.list[0].cate_id}">
@@ -16,21 +16,28 @@
             </p>
             <template>
                 <template v-if="list.cate">
-                    <p class="category-title">文化网格</p>
+                    <p class="category-title">文化普及
+                        <template v-for="(item,index) in list.cate">
+                            <router-link :key="index" tag="span" :to="{path: grid, query: {news_id: item.id}}">{{item.title}}</router-link>
+                        </template>
+                    </p>
                 </template>
                 <template v-else>
                     <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>
                 </template>
             </template>
-            <category-list :is-mobile="isMobile" :list="list" type="video" @jump="getNewsPage"></category-list>
+            <Enroll v-if="isEnroll"></Enroll>
+            <category-list v-else :is-mobile="isMobile" :list="list" type="video" @jump="getNewsPage"></category-list>
         </div>
         <Footer :is-mobile="isMobile"></Footer>
     </div>
 </template>
 
 <script>
+    import Enroll from "./Enroll";
     export default {
         name: "Grid",
+        components: {Enroll},
         data() {
             return {
                 newsId: "",
@@ -41,16 +48,27 @@
                 pageSize: 9,
                 timer: false,
                 imgFlag: false,
+                isEnroll: false,
                 isMobile: false
             }
         },
         watch: {
             $route() {
+                if(this.$route.query.news_id == 26){
+                    this.isEnroll = true
+                }else{
+                    this.isEnroll = false
+                }
                 this.getBanner();
                 this.getNewsId()
             }
         },
         mounted() {
+            if(this.$route.query.news_id == 26){
+                this.isEnroll = true
+            }else{
+                this.isEnroll = false
+            }
             this.getBanner()
             this.getNewsId()
             if(document.body.clientWidth <= 768){

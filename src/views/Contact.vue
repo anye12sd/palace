@@ -294,7 +294,7 @@
                         $(".contact-box-left").css({"position": "absolute", "top": "inherit"})
                     }
                     for(let i = 1; i <= that.rightLiTops.length; i++){
-                        if(that.rightLiTops[i] <= top && top <= that.rightLiTops[i+1]){
+                        if(that.rightLiTops[i]  <= (top-80) && (top - 80) <= that.rightLiTops[i+1]){
                             that.trend = i
                             break;
                         }else if(top > that.rightLiTops[i + 1]){

@@ -44,7 +44,7 @@ export default new Router({
             name: "Grid",
             component: Grid,
             meta: {
-                title: "文化网格"
+                title: "文化普及"
             }
         },
         {

@@ -16,7 +16,11 @@
             </p>
             <template>
                 <template v-if="list.cate">
-                    <p class="category-title">文化活动</p>
+                    <p class="category-title">文化活动
+                        <template v-for="(item,index) in list.cate">
+                            <router-link :key="index" tag="span" :to="{path: activity, query: {news_id: item.id}}">{{item.title}}</router-link>
+                        </template>
+                    </p>
                 </template>
                 <template v-else>
                     <p v-if="list.list" class="category-title">{{list.list[0].cate_name}}</p>

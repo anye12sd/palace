@@ -16,7 +16,7 @@
                         <span>文化活动</span>
                     </router-link>
                     <router-link tag="li" :to="{ path: 'grid' }">
-                        <span>文化网格</span>
+                        <span>文化普及</span>
                     </router-link>
                     <router-link tag="li" :to="{ path: 'live' }">
                         <span>文化直播</span>
@@ -35,7 +35,7 @@
                 <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
                 <span>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</span>
                 <span>{{foot.company_name}}版权所有</span>
-                <span>浙ICP证{{foot.foot_icp}}号</span>
+                <span v-if="foot.foot_icp">浙ICP证{{foot.foot_icp}}号</span>
                 <span style="width: 100%">
                 <a target="_blank" :href="foot.foot_wangan_link"
                    style="display:inline-block;text-decoration:none;color: inherit">

@@ -103,6 +103,8 @@
 }
 .nav-list-box .nav-list div{
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
 }
 .nav-list-box .nav-list div:hover{
     color: #00843e;
@@ -179,7 +181,7 @@
         line-height: 50px;
         color: #fff;
         padding-left: 50px;
-        font-size: 14px;
+        font-size: 16px;
         background: url("../../assets/img/icon_05.png") no-repeat 10px;
     }
     .enroll-bar-color {
@@ -277,7 +279,7 @@
     }
 
 
-    /*首页的文化网格需要单独写一份*/
+    /*首页的文化普及需要单独写一份*/
     .grid-culture-box .culture-content-left{
         max-width: 49%;
         margin-right: 50px;
@@ -407,10 +409,25 @@
         color: #00843e;
     }
     .category-title{
-        margin: 60px 0;
+        margin: 40px 0;
         font-size: 30px;
         color: #191919;
         font-weight: bold;
+    }
+    .category-title span{
+        font-size: 14px;
+        color: #9a9a9a;
+        margin-left: 18px;
+        font-weight: normal;
+        vertical-align: bottom;
+        cursor: pointer;
+        transition: all .3s;
+        -webkit-transition: all .3s
+    }
+    .category-title span:hover{
+        color: #00843e;
+        transition: all .3s;
+        -webkit-transition: all .3s
     }
     .banner-box {
         padding-top: 125px;
@@ -1026,20 +1043,39 @@
         background: #fff;
     }
     .enroll-banner{
-        height: 64px;
         width: 100%;
+        position: relative;
     }
     .enroll-box{
-        padding-top: 125px;
         width: 1400px;
         margin: 0 auto;
         margin-bottom: 50px;
     }
-    .enroll-banner-title{
-        color: #ffffff;
-        font-size: 20px;
+    .enroll-banner-box{
+        width: 1270px;
+        position: absolute;
+        top:-68px;
+        right: 0;
+    }
+    .course-category div{
+        margin-right: 22px;
+        color: #9a9a9a;
         font-weight: bold;
-        line-height: 64px;
+        cursor: pointer;
+        transition: color .3s;
+        -webkit-transition: color .3s;
+    }
+    .course-category div:hover{
+        color: #00843e;
+        transition: color .3s;
+        -webkit-transition: color .3s;
+    }
+    .course-category div.active{
+        color: #00843e;
+    }
+    .enroll-box-title{
+        color: #9a9a9a;
+        line-height: 30px;
     }
     .enroll-banner-btn-check{
         border-radius: 5px;
@@ -1049,7 +1085,6 @@
         color: #00843e;
         font-size: 12px;
         padding: 0 15px;
-        margin-top: 15px;
         cursor: pointer;
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
     }
@@ -1070,70 +1105,27 @@
         color: #00843e;
     }
     .enroll-list{
-        padding-top: 24px;
         background: #fff;
+        justify-content: left;
         min-height: calc(100vh - 471px);
     }
-    .enroll-list-header{
-        padding: 16px;
-        position: relative;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        color: #191919;
-        line-height: 1.5;
-        border: 1px solid #8ce6b0;
-        background-color: #edfff3;
-        text-align: center;
+    .enroll-list .enroll-list-table{
+        padding-top: 24px;
     }
-    .enroll-list-title1{
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 2;
-        text-align: center;
+    .enroll-list .enroll-list-table:nth-child(3n){
+        margin-right: 0;
     }
-    .enroll-list-title2{
-        font-size: 16px;
-        line-height: 2;
-        text-align: center;
-        font-weight: bold;
+    .enroll-list-table .culture-content-left-time{
+        margin-top: 10px;
     }
-    .enroll-table table{
-        width: 100%;
-        border-top: 1px solid #efefef;
-        border-left: 1px solid #efefef;
+    .enroll-list-table .culture-content-left-text{
+        margin-top: 12px;
+        margin-bottom: 7px;
     }
-    .enroll-table td{
-        height: 45px;
-        white-space: nowrap;
-        overflow: hidden;
-        background-color: #f8f8f9;
-        line-height: 1.5;
-        width: 11%;
-        text-align: left;
-        border-right: 1px solid #efefef;
-        border-bottom: 1px solid #efefef
-    }
-    .enroll-table-th-cell{
-        padding-left: 18px;
-        padding-right: 18px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-        word-break: break-all;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #191919;
-    }
-    .enroll-table-header{
-        background: #f8f8f9;
-    }
-    tr.enroll-table-content:hover{
-        background: #ebf7ff;
-        transition: background .2s linear;
-    }
-    .enroll-table-content td{
-        background: inherit;
-        transition: background .2s linear;
+    .enroll-list-table .culture-content-left-teacher{
+        color: #9a9a9a;
+        font-size: 12px;
+        margin-top: 3px;
     }
     .enroll-btn{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
@@ -1141,11 +1133,17 @@
         background: #00843e;
         color: #fff;
         cursor: pointer;
-        padding: 3px 9px 4px;
-        font-size: 12px;
-        border-radius: 3px;
+        font-size: 14px;
+        height: 45px;
+        line-height: 45px;
         outline: none;
-        margin-right: 8px;
+        text-align: center;
+        margin-top: 14px;
+        border-radius: 3px;
+        width: 450px;
+    }
+    .enroll-btn-box .enroll-btn{
+        width: 220px
     }
     .enroll-btn:hover{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
@@ -1153,12 +1151,27 @@
         background: #00cc61;
     }
     .enroll-btn-danger{
+        width: 220px;
+        text-align: center;
+        background: #ed4014;
+        border-color: #ed4014;
+        height: 45px;
+        line-height: 45px;
+        color: #fff;
+        margin-left: 15px;
+        margin-top: 14px;
+        border-radius: 3px;
+    }
+    .enroll-btn-danger:hover{
+        transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
+        background: #f06a4a;
+    }
+    .enroll-btn-danger{
         background: #ed4014;
         border-color: #ed4014;
     }
     .enroll-btn-danger:hover{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
-        border: 1px solid #f06a4a;
         background: #f06a4a;
     }
     .enroll-form-box{
@@ -1338,7 +1351,7 @@
         color: #ed4014;
     }
     .enroll-login{
-        margin-top: 16px;
+        margin-top: 0;
     }
     .enroll-login-input-box {
         display: inline-block;
@@ -1348,7 +1361,7 @@
     }
     .enroll-login-input-box input {
         display: inline-block;
-        width: 90%;
+        width: 95%;
         height: 32px;
         line-height: 1.5;
         padding: 4px 7px;
@@ -1389,7 +1402,7 @@
         color: #fff;
     }
     .logined-status{
-        margin-top: 16px;
+        margin-top: 0;
     }
     .logined-status div{
         margin-left: 8px;
@@ -1436,7 +1449,7 @@
         line-height: 40px;
         color: #fff;
         padding-left: 40px;
-        font-size: 14px;
+        font-size: 16px;
         background: url("../../assets/img/icon_05.png") no-repeat 10px;
     }
     .enroll-bar-color {
@@ -1590,6 +1603,7 @@
         font-size: 14px;
         color: #9a9a9a;
         margin-top: 30px;
+        margin-bottom: 40px;
     }
     .category-bread-crumb span{
         cursor: pointer;
@@ -1717,13 +1731,9 @@
     .culture-content-left .culture-content-box-mask:hover .culture-content-box-img{
         transform: scale(1);
     }
-    .culture-content-left img {
-        width: 325px;
-        height: 245px;
-    }
 
 
-    /*首页的文化网格需要单独写一份*/
+    /*首页的文化普及需要单独写一份*/
     .grid-culture-box .culture-content-left{
         max-width: 49%;
         margin-right: 40px;
@@ -2269,14 +2279,37 @@
         background: #fff;
     }
     .enroll-banner{
-        height: 64px;
         width: 100%;
+        position: relative;
     }
     .enroll-box{
-        padding-top: 100px;
         width: 1000px;
         margin: 0 auto;
         margin-bottom: 50px;
+    }
+    .enroll-banner-box{
+        width: 870px;
+        position: absolute;
+        top:-48px;
+        right: 0;
+    }
+    .course-category div{
+        margin-right: 22px;
+        color: #9a9a9a;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .course-category div:hover{
+        color: #00843e;
+        transition: color .3s linear
+    }
+    .course-category div.active{
+        color: #00843e;
+        transition: color .3s linear
+    }
+    .enroll-box-title{
+        color: #9a9a9a;
+        line-height: 30px;
     }
     .enroll-banner-title{
         color: #ffffff;
@@ -2292,7 +2325,6 @@
         color: #00843e;
         font-size: 12px;
         padding: 0 15px;
-        margin-top: 15px;
         cursor: pointer;
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
     }
@@ -2313,72 +2345,27 @@
         color: #00843e;
     }
     .enroll-list{
-        padding-top: 24px;
         background: #fff;
+        justify-content: left;
+        min-height: calc(100vh - 471px);
     }
-    .enroll-list-header{
-        padding: 16px;
-        position: relative;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        color: #191919;
-        line-height: 1.5;
-        border: 1px solid #8ce6b0;
-        background-color: #edfff3;
-        text-align: center;
+    .enroll-list .enroll-list-table{
+        padding-top: 24px;
     }
-    .enroll-list-title1{
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 2;
-        text-align: center;
+    .enroll-list .enroll-list-table:nth-child(3n){
+        margin-right: 0;
     }
-    .enroll-list-title2{
-        font-size: 16px;
-        line-height: 2;
-        text-align: center;
-        font-weight: bold;
+    .enroll-list-table .culture-content-left-time{
+        margin-top: 10px;
     }
-    .enroll-table table{
-        width: 100%;
-        border-top: 1px solid #efefef;
-        border-left: 1px solid #efefef;
+    .enroll-list-table .culture-content-left-text{
+        margin-top: 12px;
+        margin-bottom: 7px;
     }
-    .enroll-table td{
-        height: 45px;
-        white-space: nowrap;
-        overflow: hidden;
-        background-color: #f8f8f9;
-        line-height: 1.5;
-        width: 11%;
-        text-align: left;
-        border-right: 1px solid #efefef;
-        border-bottom: 1px solid #efefef
-    }
-    .enroll-table-th-cell{
-        padding-left: 18px;
-        padding-right: 18px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-        word-break: break-all;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #191919;
-    }
-    .enroll-table-header{
-        background: #f8f8f9;
-    }
-    tr.enroll-table-content:hover{
-        background: #ebf7ff;
-        transition: background .2s linear;
-    }
-    .enroll-table-content td{
-        background: inherit;
-        transition: background .2s linear;
-    }
-    .enroll-table-content .width20{
-        width: 20%;
+    .enroll-list-table .culture-content-left-teacher{
+        color: #9a9a9a;
+        font-size: 12px;
+        margin-top: 3px;
     }
     .enroll-btn{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
@@ -2386,9 +2373,16 @@
         background: #00843e;
         color: #fff;
         cursor: pointer;
-        padding: 3px 9px 4px;
-        font-size: 12px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 12px;
         border-radius: 3px;
+        width: 325px;
+    }
+    .enroll-btn-box .enroll-btn{
+        width: 150px
     }
     .enroll-btn:hover{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
@@ -2396,12 +2390,19 @@
         background: #00cc61;
     }
     .enroll-btn-danger{
+        width: 150px;
+        text-align: center;
         background: #ed4014;
         border-color: #ed4014;
+        height: 40px;
+        line-height: 40px;
+        color: #fff;
+        margin-left: 15px;
+        margin-top: 12px;
+        border-radius: 3px;
     }
     .enroll-btn-danger:hover{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
-        border: 1px solid #f06a4a;
         background: #f06a4a;
     }
     .enroll-form-box{
@@ -2581,7 +2582,7 @@
         color: #ed4014;
     }
     .enroll-login{
-        margin-top: 16px;
+        margin-top: 0;
     }
     .enroll-login-input-box {
         display: inline-block;
@@ -2591,7 +2592,7 @@
     }
     .enroll-login-input-box input {
         display: inline-block;
-        width: 90%;
+        width: 95%;
         height: 32px;
         line-height: 1.5;
         padding: 4px 7px;
@@ -2632,7 +2633,7 @@
         color: #fff;
     }
     .logined-status{
-        margin-top: 16px;
+        margin-top: 0;
     }
     .logined-status div{
         margin-left: 8px;
@@ -3639,22 +3640,48 @@
         background: #fff;
     }
     .enroll-banner{
-        height: auto;
+        height: 34px;
         width: 100%;
         padding: 0 15px;
     }
     .enroll-box{
-        padding-top: 50px;
         width: 100%;
         margin: 0 auto;
         margin-bottom: 50px;
         min-height: calc(100vh - 260px);
+    }
+    .enroll-banner-box{
+        width: 100%;
+        position: absolute;
+        top:0;
+        right: 0;
+        height: 34px;
+    }
+    .course-category div{
+        margin-right: 22px;
+        margin-top: 8px;
+        color: #9a9a9a;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .course-category div:hover{
+        color: #00843e;
+        transition: color .3s linear
+    }
+    .course-category div.active{
+        color: #00843e;
+        transition: color .3s linear
     }
     .enroll-banner-title{
         color: #ffffff;
         font-size: 20px;
         font-weight: bold;
         line-height: 64px;
+    }
+    .enroll-box-title{
+        color: #9a9a9a;
+        line-height: 30px;
+        margin-top: 8px;
     }
     .enroll-banner-btn-check{
         border-radius: 5px;
@@ -3664,7 +3691,6 @@
         color: #00843e;
         font-size: 12px;
         padding: 0 15px;
-        margin-top: 15px;
         cursor: pointer;
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
     }
@@ -3685,32 +3711,11 @@
         color: #00843e;
     }
     .enroll-list{
-        padding-top: 12px;
+        padding-top: 0px;
         background: #fff;
     }
-    .enroll-list-header{
-        margin: 0 15px;
-        padding: 14px;
-        position: relative;
-        border-radius: 4px;
-        margin-bottom: 15px;
-        color: #191919;
-        line-height: 1.5;
-        border: 1px solid #8ce6b0;
-        background-color: #edfff3;
-        text-align: center;
-    }
-    .enroll-list-title1{
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 2;
-        text-align: center;
-    }
-    .enroll-list-title2{
-        font-size: 14px;
-        line-height: 2;
-        text-align: center;
-        font-weight: bold;
+    .enroll-list .enroll-list-table{
+        padding-top: 15px;
     }
     .enroll-table table{
         width: 100%;
@@ -3721,7 +3726,7 @@
     /*对移动端表格css的重写*/
 
     .enroll-mobile-list-box{
-        padding: 0 15px
+        padding: 0
     }
     .enroll-mobile-list-detail{
         width: 49%;
@@ -3801,6 +3806,10 @@
         -moz-transform:rotate(90deg);     /*兼容-moz-引擎浏览器*/
         transform-origin: 12px 23px;
     }
+    .enroll-list-table{
+        margin-top: 0;
+    }
+
 
     /*对移动端表格css的重写完毕*/
 
@@ -3814,17 +3823,6 @@
         text-align: left;
         border-right: 1px solid #efefef;
         border-bottom: 1px solid #efefef
-    }
-    .enroll-table-th-cell{
-        padding-left: 18px;
-        padding-right: 18px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-        word-break: break-all;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #191919;
     }
     .enroll-table-header{
         background: #f8f8f9;
@@ -3849,10 +3847,10 @@
         font-size: 12px;
         border-radius: 3px;
         padding: 0 10px;
-        height: 30px;
-        line-height: 30px;
+        height: 35px;
+        line-height: 35px;
         margin-right: 0;
-        margin-top: 8px;
+        width: 100%;
     }
     .enroll-btn:hover{
         transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
@@ -3860,13 +3858,10 @@
         background: #00cc61;
     }
     .enroll-btn-danger{
+        height: 35px;
+        line-height: 35px;
         background: #ed4014;
         border-color: #ed4014;
-    }
-    .enroll-btn-danger:hover{
-        transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
-        border: 1px solid #f06a4a;
-        background: #f06a4a;
     }
     .enroll-form-box{
         position: fixed;
@@ -4071,7 +4066,7 @@
         vertical-align: middle;
         line-height: normal;
         padding: 0 15px;
-        margin-top: 20px;
+        margin-top: 15px;
     }
     .enroll-login-input-box input {
         display: inline-block;
@@ -4096,6 +4091,7 @@
     .login-btn{
         float: right;
         padding: 8px 18px;
+        margin-top: 0;
         display: inline-block;
         height: auto;
         line-height: normal;
@@ -4115,8 +4111,8 @@
         margin-bottom: 20px;
     }
     .login-btn:hover{
-        color: #00cc61;
-        border-color: #00cc61;
+        color: #00843e;
+        border-color: #00843e;
     }
     .enroll-login .logined-btn{
         margin-right: 15px;
@@ -4127,16 +4123,19 @@
         background-color: #00843e;
     }
     .logined-btn:hover{
-        border-color: #00cc61;
-        background-color: #00cc61;
+        border-color: #00843e;
+        background-color: #00843e;
         color: #fff;
     }
     .logined-status{
-        margin-top: 8px;
-        margin-bottom: 8px;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     .logined-status div{
         margin-left: 8px;
+    }
+    .logined-status div:nth-child(1){
+        margin-left: 0;
     }
     .button-primary{
         background-color: #00843e;

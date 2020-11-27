@@ -36,7 +36,7 @@
                         </router-link>
                     </template>
                 </div>
-                <router-link tag="div" :to="{path: 'enroll'}" class="enroll-bar flex flexWrap">
+                <router-link tag="div" :to="{path: 'grid?news_id=26'}" class="enroll-bar flex flexWrap">
                     <p class="enroll-bar-name">免费培训（在线报名）</p>
                     <div class="enroll-bar-color"></div>
                 </router-link>
@@ -140,7 +140,9 @@
                             <div :class="{active: grid == 0}" @click="searchGrid(0,menu[3].news_cate_id)">
                                 <span>全部</span></div>
                             <template v-for="(item, index) in menu[3].children">
-                                <div :key="index" :class="{active: grid == index + 1}"
+                                <router-link tag="div" :key="index" v-if="item.id == 26" :class="{active: grid == index + 1}"
+                                             :to="{path: 'grid?news_id=' + item.id}"><span>{{item.title}}</span></router-link>
+                                <div :key="index" v-else :class="{active: grid == index + 1}"
                                      @click="searchGrid(index + 1, item.id)"><span>{{item.title}}</span></div>
                             </template>
                             <!--                            <div :class="{active: grid == 1}" @click="searchGrid(1)"><span>线上培训</span></div>-->
@@ -324,7 +326,6 @@
                 this.$api.getBanner()
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.banner = data.data.data
                             setTimeout(function () {
                                 this.swiper = new Swiper('.swiper-container-home', {
@@ -337,7 +338,7 @@
                                     nextButton: '.swiper-button-next',
                                     prevButton: '.swiper-button-prev',
                                 });
-                            }, 1000)
+                            }, 300)
                         } else {
                             this.$message.error(data.data.msg)
                         }
