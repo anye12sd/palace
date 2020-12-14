@@ -3,7 +3,8 @@
 <!--        判断是否移动端-->
         <template v-if="!isMobile">
             <template v-for="(item, index) in data">
-                <router-link tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" class="culture-content-left flex-1" :key="index">
+<!--                在首页cate_id为26的直接跳到文化普及的线下培训报名去-->
+                <router-link v-if="item.cate_id != 26" tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" class="culture-content-left flex-1" :key="index">
                     <div class="culture-content-box-mask" v-if="item.status != 1">
                         <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
                     </div>
@@ -13,6 +14,14 @@
                     <template v-else>
                         <img :src="imgUrl + item.image + contentImg" alt="" @error="showErrImg">
                     </template>
+                    <p class="culture-content-left-time">{{item.create_time}}</p>
+                    <p class="culture-content-left-text">
+                        <span class="culture-content-left-text-title">{{item.cate_name}}</span>
+                        <span class="culture-content-left-text-content">{{item.title}}</span>
+                    </p>
+                </router-link>
+                <router-link v-else tag="div" :to="{path: 'grid?news_id=26'}" class="culture-content-left flex-1" :key="index">
+                    <img :src="imgUrl + item.image + '!/both/450x250'" alt="" @error="showErrImg">
                     <p class="culture-content-left-time">{{item.create_time}}</p>
                     <p class="culture-content-left-text">
                         <span class="culture-content-left-text-title">{{item.cate_name}}</span>
@@ -41,7 +50,16 @@
                     <div class="swiper-wrapper">
                         <template v-for="(item,index) in data.slice(0,3)">
                             <div class="swiper-slide" :key="index">
-                                <router-link tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" class="culture-content-left" :key="index">
+                                <!--                在首页cate_id为26的直接跳到文化普及的线下培训报名去-->
+                                <router-link v-if="item.cate_id != 26" tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" class="culture-content-left" :key="index">
+                                    <img :src="imgUrl + item.image + contentImg" alt="" @error="showErrImg">
+                                    <p class="culture-content-left-time">{{item.create_time}}</p>
+                                    <p class="culture-content-left-text flex">
+                                        <span class="culture-content-left-text-title">{{item.cate_name}}</span>
+                                        <span class="culture-content-left-text-content flex-1">{{item.title}}</span>
+                                    </p>
+                                </router-link>
+                                <router-link v-else tag="div" :to="{path: 'grid?news_id=26'}" class="culture-content-left" :key="index">
                                     <img :src="imgUrl + item.image + contentImg" alt="" @error="showErrImg">
                                     <p class="culture-content-left-time">{{item.create_time}}</p>
                                     <p class="culture-content-left-text flex">

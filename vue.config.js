@@ -17,7 +17,7 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '/web': {
-                target: 'http://175.24.135.230:5006/web',
+                target: 'http://42.192.209.104:5006/web',
                 // target: 'http://192.168.8.24:3000/web',
                 changeOrigin: true,
                 ws: true,

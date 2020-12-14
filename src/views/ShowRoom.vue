@@ -55,13 +55,20 @@
             }
         },
         mounted() {
-            this.getBanner()
+            let that = this
+            if(!JSON.parse(sessionStorage.getItem("menu"))){
+                setTimeout(function(){
+                    // 如果没有menu需要延时加载否则会导致获取不到menu而加载不出banner
+                    that.getBanner()
+                }, 300)
+            }else{
+                that.getBanner()
+            }
             this.getNewsId()
             if(document.body.clientWidth <= 768){
                 this.isMobile = true
             }
             this.originWidth = document.body.clientWidth
-            let that = this
             window.onresize = function(){ // 定义窗口大小变更通知事件
                 if(!that.timer) {
                     that.timer = true
@@ -126,7 +133,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.list = data.data.data
                             // this.bannerImg = data.data.data.img_path + data.data.data.cate[0].image
                         } else {
@@ -142,7 +148,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.list = data.data.data
                         } else {
                             this.$message.error(data.data.msg)

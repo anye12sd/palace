@@ -1,6 +1,6 @@
 <template>
     <div>
-<!--        <remote-js src="http://pv.sohu.com/cityjson?ie=utf-8"></remote-js>-->
+        <!--        <remote-js src="http://pv.sohu.com/cityjson?ie=utf-8"></remote-js>-->
         <header-nav :istrue="cate_id"></header-nav>
         <banner v-if="imgFlag" :bannerImg="bannerImg"></banner>
         <div id="qrcode" ref="qrcode" style="display: none"></div>
@@ -8,28 +8,57 @@
             <div class="category-box" :class="{ptFlag: !imgFlag}">
                 <p class="category-bread-crumb">位置：
                     <router-link tag="span" :to="{path: '/'}">文化馆首页</router-link>
-                    <router-link v-if="cateParentUrl.url" tag="span" :to="{path: cateParentUrl.url}"> - {{cateParentUrl.title}}</router-link>
-                    <router-link v-if="cateUrl" tag="span" :to="{path: cateUrl}"> - {{dataDetail.cate_name}}</router-link>
+                    <router-link v-if="cateParentUrl.url" tag="span" :to="{path: cateParentUrl.url}"> -
+                        {{cateParentUrl.title}}
+                    </router-link>
+                    <router-link v-if="cateUrl" tag="span" :to="{path: cateUrl}"> - {{dataDetail.cate_name}}
+                    </router-link>
                     -
                     {{dataDetail.title}}
                 </p>
                 <template v-if="dataDetail.status == 2 || dataDetail.status == 3">
                     <div class="news-video-box">
-<!--                        <div v-if="dataDetail.status == 2" class="news-video-box-a">-->
-                        <a v-if="dataDetail.status == 2" :href="dataDetail.video" target="_blank" class="news-video-box-a">
-                            <div v-if="videoPause" class="news-video-box-mask">
-                                <img src="../assets/img/video.png" alt="">
-                            </div>
-<!--                            <div v-else class="videoPlay">-->
-<!--                                <div id="container" class="video-wrapper"></div>-->
-<!--                            </div>-->
-                            <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt="" class="news-video-box-img" @error="showErrImg">
-                        </a>
+                        <div v-if="dataDetail.status == 2" class="news-video-box-a">
+                            <template v-if="videoType == 1">
+                                <a :href="dataDetail.video" target="_blank" class="news-video-box-a">
+                                    <div v-show="videoPauseBox" class="news-video-box-mask news-video-box-mask-cover-all">
+                                        <img src="../assets/img/video.png" alt="">
+                                    </div>
+                                    <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt="" class="news-video-box-img" @error="showErrImg">
+                                </a>
+                            </template>
+                            <template v-else>
+                                <div v-show="videoPauseBox" class="news-video-box-mask" @click.stop="getVideo">
+<!--                                    <img src="../assets/img/video.png" :class="{'video-pause-hide': !videoPause}" alt="">-->
+                                </div>
+                                <video :poster="img_path + dataDetail.image + imgWidth.swiperImg" controls class="news-video" id="video" controlslist="nodownload">
+                                    <source :src="videoUrl + videoLink" type="video/mp4">
+                                    <object id="flowplayer" width="400" height="300"
+                                            data="flowplayer-3.2.18.swf"
+                                            type="application/x-shockwave-flash">
+                                        <param name="movie" value="flowplayer-3.2.18.swf">
+                                        <param name="flashvars" :value="'config={clip:'+videoUrl + videoLink+'}'">
+                                    </object>
+                                </video>
+                            </template>
+                        </div>
+                        <!--                        <div v-if="dataDetail.status == 2" class="news-video-box-a">-->
+                        <!--                        <a v-if="dataDetail.status == 2" :href="dataDetail.video" target="_blank" class="news-video-box-a">-->
+                        <!--                            <div v-if="videoPause" class="news-video-box-mask">-->
+                        <!--                                <img src="../assets/img/video.png" alt="">-->
+                        <!--                            </div>-->
+                        <!--&lt;!&ndash;                                腾讯视频播放器&ndash;&gt;-->
+                        <!--&lt;!&ndash;                            <div v-else class="videoPlay">&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                <div id="container" class="video-wrapper"></div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+                        <!--                            <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt="" class="news-video-box-img" @error="showErrImg">-->
+                        <!--                        </a>-->
                         <a v-else :href="dataDetail.live" target="_blank" class="news-video-box-a">
                             <div class="news-video-box-mask">
                                 <img src="../assets/img/video.png" alt="">
                             </div>
-                            <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt="" class="news-video-box-img" @error="showErrImg">
+                            <img :src="img_path + dataDetail.image + imgWidth.swiperImg" alt=""
+                                 class="news-video-box-img" @error="showErrImg">
                         </a>
                     </div>
                     <div class="news-box news-box-bottom flex flexWrap">
@@ -39,8 +68,8 @@
                                 <span>{{dataDetail.visits}}次浏览</span>
                                 <span>发布时间：{{dataDetail.create_time}}</span>
                                 <span>来源：{{dataDetail.source}}</span>
-<!--                                <span>图文编辑：{{dataDetail.author}}</span>-->
-<!--                                <span>审  核：{{dataDetail.check}}</span>-->
+                                <!--                                <span>图文编辑：{{dataDetail.author}}</span>-->
+                                <!--                                <span>审  核：{{dataDetail.check}}</span>-->
                             </p>
                         </div>
                         <div class="operate">
@@ -49,13 +78,15 @@
                                 <a-icon v-else type="heart" style="color: #686b67"/>
                                 <span>点赞</span></div>
                             <div class="share-btn" @click="openShareBox">
-                                <a-icon type="share-alt" />
+                                <a-icon type="share-alt"/>
                                 <span>分享</span>
                             </div>
                             <div v-if="shareBox" class="share-box">
                                 <a-icon type="qq" class="share-total share-qq" title="分享到qq" @click="share('qq')"/>
-                                <a-icon type="weibo" class="share-total share-weibo" title="分享到微博" @click="share('weibo')"/>
-                                <a-icon type="wechat" theme="filled" class="share-total share-wechat" title="分享到微信" @click="share('wechat')"/>
+                                <a-icon type="weibo" class="share-total share-weibo" title="分享到微博"
+                                        @click="share('weibo')"/>
+                                <a-icon type="wechat" theme="filled" class="share-total share-wechat" title="分享到微信"
+                                        @click="share('wechat')"/>
                                 <span class="scan-code">
                                 <img :src="qrcodeImg" alt="Scan me!">
                             </span>
@@ -77,7 +108,9 @@
                                         </div>
                                     </a-tab-pane>
                                     <template v-for="(item, index) in catalog">
-                                        <a-tab-pane v-if="catalogContent[index].content && catalogContent[index].content.length != 7" :key="index+2" :tab="item.label">
+                                        <a-tab-pane
+                                                v-if="catalogContent[index].content && catalogContent[index].content.length != 7"
+                                                :key="index+2" :tab="item.label">
                                             <div v-html="catalogContent[index].content"></div>
                                         </a-tab-pane>
                                     </template>
@@ -95,7 +128,7 @@
                             <template v-for="(item, index) in relation">
                                 <router-link :key="index" tag="div" :to="{path: '/newsDetail', query: {id: item.id}}"
                                              class="recommend-box">
-<!--                                    <img :src="img_path + item.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
+                                    <!--                                    <img :src="img_path + item.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
                                     <p class="recommend-content-text-content flex-1">{{item.title}}</p>
                                     <div class="recommend-content-text flex">
                                         <p class="recommend-content-text-title">{{item.cate_name}}</p>
@@ -128,7 +161,7 @@
                             <template v-for="(item, index) in relation">
                                 <router-link :key="index" tag="div" :to="{path: '/newsDetail', query: {id: item.id}}"
                                              class="recommend-box">
-<!--                                    <img :src="img_path + relation.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
+                                    <!--                                    <img :src="img_path + relation.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
                                     <p class="recommend-content-text-content flex-1">{{item.title}}</p>
                                     <div class="recommend-content-text flex">
                                         <p class="recommend-content-text-title">{{item.cate_name}}</p>
@@ -167,22 +200,41 @@
                                 <span>{{dataDetail.visits}}次浏览</span>
                                 <p>发布时间：{{dataDetail.create_time}}</p>
                                 <p>来源：{{dataDetail.source}}</p>
-<!--                                <p>图文编辑：{{dataDetail.author}}</p>-->
-<!--                                <p>审  核：{{dataDetail.check}}</p>-->
+                                <!--                                <p>图文编辑：{{dataDetail.author}}</p>-->
+                                <!--                                <p>审  核：{{dataDetail.check}}</p>-->
                             </div>
                         </div>
                         <div class="news-video-box">
-                            <a v-if="dataDetail.status == 2" :href="dataDetail.video" target="_blank" class="news-video-box-a">
-                                <div class="news-video-box-mask">
-                                    <img src="../assets/img/video.png" alt="">
-                                </div>
-                                <img :src="img_path + dataDetail.image" alt="" class="news-video-box-img" @error="showErrImg">
-                            </a>
+                            <div v-if="dataDetail.status == 2">
+                                <template v-if="videoType == 1">
+                                    <a :href="dataDetail.video" target="_blank" class="news-video-box-a">
+                                        <div v-show="videoPauseBox" class="news-video-box-mask news-video-box-mask-cover-all">
+                                            <img src="../assets/img/video.png" alt="">
+                                        </div>
+                                        <img :src="img_path + dataDetail.image" alt="" class="news-video-box-img" @error="showErrImg">
+                                    </a>
+                                </template>
+                                <template v-else>
+                                    <div v-show="videoPauseBox" class="news-video-box-mask" @click.stop="getVideo">
+<!--                                        <img src="../assets/img/video.png" :class="{'video-pause-hide': !videoPause}" alt="">-->
+                                    </div>
+                                    <video :poster="img_path + dataDetail.image" playsinline controls class="news-video" id="video1" controlslist="nodownload">
+                                        <source :src="videoUrl + videoLink" type="video/mp4">
+                                        <object id="flowplayer" width="400" height="300"
+                                                data="flowplayer-3.2.18.swf"
+                                                type="application/x-shockwave-flash">
+                                            <param name="movie" value="flowplayer-3.2.18.swf">
+                                            <param name="flashvars" :value="'config={clip:'+videoUrl + videoLink+'}'">
+                                        </object>
+                                    </video>
+                                </template>
+                            </div>
                             <a v-else :href="dataDetail.live" target="_blank" class="news-video-box-a">
                                 <div class="news-video-box-mask">
                                     <img src="../assets/img/video.png" alt="">
                                 </div>
-                                <img :src="img_path + dataDetail.image" alt="" class="news-video-box-img" @error="showErrImg">
+                                <img :src="img_path + dataDetail.image" alt="" class="news-video-box-img"
+                                     @error="showErrImg">
                             </a>
                         </div>
                         <div class="operate">
@@ -193,8 +245,10 @@
                             </div>
                             <div v-if="shareBox" class="share-box">
                                 <a-icon type="qq" class="share-total share-qq" title="分享到qq" @click="share('qq')"/>
-                                <a-icon type="weibo" class="share-total share-weibo" title="分享到微博" @click="share('weibo')"/>
-                                <a-icon type="wechat" theme="filled" class="share-total share-wechat" title="分享到微信" @click="share('wechat')"/>
+                                <a-icon type="weibo" class="share-total share-weibo" title="分享到微博"
+                                        @click="share('weibo')"/>
+                                <a-icon type="wechat" theme="filled" class="share-total share-wechat" title="分享到微信"
+                                        @click="share('wechat')"/>
                                 <span class="scan-code">
                                 <img :src="qrcodeImg" alt="Scan me!">
                             </span>
@@ -216,7 +270,9 @@
                                         </div>
                                     </a-tab-pane>
                                     <template v-for="(item, index) in catalog">
-                                        <a-tab-pane v-if="catalogContent[index].content && catalogContent[index].content.length != 7" :key="index+2" :tab="item.label">
+                                        <a-tab-pane
+                                                v-if="catalogContent[index].content && catalogContent[index].content.length != 7"
+                                                :key="index+2" :tab="item.label">
                                             <div v-html="catalogContent[index].content"></div>
                                         </a-tab-pane>
                                     </template>
@@ -281,7 +337,7 @@
                     <template v-for="(item, index) in relation">
                         <router-link :key="index" tag="div" :to="{path: '/newsDetail', query: {id: item.id}}"
                                      class="recommend-box">
-<!--                            <img :src="img_path + relation.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
+                            <!--                            <img :src="img_path + relation.image + imgWidth.contentImg" alt="" @error="showErrImg">-->
                             <p class="recommend-content-text-content flex-1">{{item.title}}</p>
                             <div class="recommend-content-text flex">
                                 <p class="recommend-content-text-title">{{item.cate_name}}</p>
@@ -302,6 +358,7 @@
 
 <script>
     import QRCode from 'qrcodejs2'
+
     export default {
         name: "NewsDetail",
         components: {
@@ -318,7 +375,7 @@
             return {
                 imgWidth: {
                     swiperImg: "",
-                    contentImg: ""
+                    contentImg: "",
                 },
                 dataDetail: "",
                 originWidth: 1,
@@ -338,7 +395,11 @@
                 shareBox: false,
                 qrcodeImg: "",
                 ip: "",
+                videoUrl: "http://42.192.209.104/video_upload/",
+                videoLink: "",
+                videoType: "",
                 videoPause: true,
+                videoPauseBox: true,
                 timer: false,
                 isMobile: false
             }
@@ -348,20 +409,20 @@
             this.qrcodeScan();
             // this.getNewsId() // 获取banner图
             // this.initVideo(); // 加载视频
-            if(document.body.clientWidth <= 768){
+            if (document.body.clientWidth <= 768) {
                 this.isMobile = true
             }
             this.originWidth = document.body.clientWidth
             this.getImgWidth()
             let that = this
-            window.onresize = function(){ // 定义窗口大小变更通知事件
-                if(!that.timer) {
+            window.onresize = function () { // 定义窗口大小变更通知事件
+                if (!that.timer) {
                     that.timer = true
                     setTimeout(function () {
                         that.timer = false
-                        if(document.body.clientWidth <= 768){
+                        if (document.body.clientWidth <= 768) {
                             that.originWidth <= 768 ? console.log("不要随便resize哦~") : location.reload()
-                        }else{
+                        } else {
                             that.originWidth > 768 ? console.log("不要随便resize哦~") : location.reload()
                         }
                     }, 1000)
@@ -371,7 +432,7 @@
         watch: {
             $route() {
                 this.fetch();
-            }
+            },
         },
         methods: {
             // initVideo(src){
@@ -383,7 +444,7 @@
             //         height: '590px'
             //     });
             // },
-            getImgWidth(){
+            getImgWidth() {
                 this.imgWidth.swiperImg = '!/both/1186x500'
                 this.imgWidth.contentImg = '!/both/450x340'
             },
@@ -401,7 +462,7 @@
                             this.bannerImg = imgPath + menu[i].image
                             this.imgFlag = true
                             return false
-                        } else if(menu[i].image_sj && this.isMobile){
+                        } else if (menu[i].image_sj && this.isMobile) {
                             this.bannerImg = imgPath + menu[i].image_sj
                             this.imgFlag = true
                             return false
@@ -420,7 +481,7 @@
                                     this.bannerImg = imgPath + children[j].image
                                     this.imgFlag = true
                                     return false
-                                } else if(children[j].image_sj && this.isMobile){
+                                } else if (children[j].image_sj && this.isMobile) {
                                     this.bannerImg = imgPath + children[j].image_sj
                                     this.imgFlag = true
                                     return false
@@ -432,22 +493,45 @@
                     }
                 }
             },
-            openShareBox(){
+            getVideo: function(){
+                let myVideo
+                if(this.isMobile){
+                    myVideo = document.getElementById('video1')
+                }else{
+                    myVideo = document.getElementById('video')
+                }
+                this.watchVideo(myVideo)
+                myVideo.play()
+            },
+            watchVideo: function (ele) {
+                let that = this
+                ele.addEventListener('play', function () {//播放开始执行的函数
+                    that.videoPause = false
+                    setTimeout(function(){
+                        that.videoPauseBox = false
+                    }, 250)
+                });
+                ele.addEventListener('pause', function () {//暂停开始执行的函数
+                    that.videoPauseBox = true
+                    that.videoPause = true
+                });
+            },
+            openShareBox() {
                 let qrcodeImg = document.getElementById("qrcode").lastChild.getAttribute("src")
                 this.qrcodeImg = qrcodeImg
                 this.shareBox = !this.shareBox
             },
-            share(val){
+            share(val) {
                 let href = window.location.href
-                if(val == 'qq'){
-                    window.open('https://connect.qq.com/widget/shareqq/index.html?title='+this.dataDetail.title+'&url='+href,"_blank")
-                }else if(val == 'weibo'){
-                    window.open('https://service.weibo.com/share/share.php?title='+this.dataDetail.title+'&url='+href,"_blank")
+                if (val == 'qq') {
+                    window.open('https://connect.qq.com/widget/shareqq/index.html?title=' + this.dataDetail.title + '&url=' + href, "_blank")
+                } else if (val == 'weibo') {
+                    window.open('https://service.weibo.com/share/share.php?title=' + this.dataDetail.title + '&url=' + href, "_blank")
                 }
             },
             toPoint: function () {
                 // 点赞
-                let params = {news_id: this.dataDetail.id,ip: returnCitySN["cip"]}
+                let params = {news_id: this.dataDetail.id, ip: returnCitySN["cip"]}
                 this.$api.postLikes(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
@@ -461,8 +545,8 @@
                         console.log(err)
                     })
             },
-            visits(){
-                let params = {news_id: this.dataDetail.id,ip: returnCitySN["cip"]}
+            visits() {
+                let params = {news_id: this.dataDetail.id, ip: returnCitySN["cip"]}
                 this.$api.postVisits(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
@@ -503,18 +587,22 @@
                             // 统计访问数
                             this.dataNext = data.data.data.next_list
                             this.dataPrev = data.data.data.prev_list
-                            this.getBanner(data.data.data.detail.cate_id)
                             this.img_path = data.data.data.img_path
+                            this.videoType = data.data.data.detail.is_video_type
+                            this.videoLink = data.data.data.detail.upload_video_name
                             let foot = JSON.parse(sessionStorage.getItem("foot"))
                             this.qrImg = this.img_path + foot.qr_code
                             // 新闻详情标题和文章标题对应
                             document.title = this.dataDetail.title
-                            this.getBanner(data.data.data.detail.cate_id)
-                            if (data.data.data.next_list_arr.length) {
-                                this.relation = data.data.data.next_list_arr
-                            } else {
-                                this.getRelation(data.data.data.detail.cate_id)
-                            }
+                            console.log(data.data.data.next_list_arr)
+                            let that = this
+                            setTimeout(function(){
+                                if (data.data.data.next_list_arr.length) {
+                                    that.relation = data.data.data.next_list_arr
+                                } else {
+                                    that.getRelation(data.data.data.detail.cate_id)
+                                }
+                            }, 400)
                             if (this.dataDetail.status == 2 || this.dataDetail.status == 3) {
                                 // if(this.dataDetail.video){
                                 //     this.initVideo(this.dataDetail.video)
@@ -522,6 +610,7 @@
                                 this.catalog = this.dataDetail.catalog
                                 this.catalogContent = this.dataDetail.catalog_content
                             }
+                            this.getBanner(data.data.data.detail.cate_id)
                             // this.getNewsId(this.dataDetail.cate_id)
                             window.scrollTo(0, 0)
                         } else {
@@ -533,12 +622,11 @@
                     })
             },
             getRelation: function (id) {
-                console.log(id)
                 let params = {cate_id: id}
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            this.relation = data.data.data.list.slice(0,1)
+                            this.relation = data.data.data.list.slice(0, 1)
                         } else {
                             this.$message.error(data.data.msg)
                         }
@@ -575,7 +663,7 @@
                         break
                 }
             },
-            qrcodeScan () {//生成二维码
+            qrcodeScan() {//生成二维码
                 let qrcode = new QRCode('qrcode', {
                     width: 200,  // 二维码宽度
                     height: 200, // 二维码高度
@@ -583,7 +671,7 @@
                     correctLevel: 3
                 })
             },
-            showErrImg(e){
+            showErrImg(e) {
                 e.target.src = require('@/assets/img/default.jpg')
             }
         }

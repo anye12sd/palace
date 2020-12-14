@@ -47,7 +47,7 @@
                             <img :src="img_path + item.image[0] + '!/both/450x340'" alt="" @error="showErrImg">
 <!--                            <img src="x" alt="" @error="showErrImg">-->
                             <p class="culture-content-left-time">{{item.time}}</p>
-                            <p class="culture-content-left-text">
+                            <p class="culture-content-left-text flex">
                                 <span class="culture-content-left-text-title">{{item.category_name}}</span>
                                 <span class="culture-content-left-text-content">{{item.title}}</span>
                             </p>
@@ -61,7 +61,7 @@
                                 上课教室：{{item.classroom}}
                             </p>
                             <template v-if="changeCourse">
-                                <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title)">
+                                <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title,item.is_close)">
                                     立即报名
                                 </div>
                             </template>
@@ -196,7 +196,7 @@
                                         上课教室：{{item.classroom}}
                                     </p>
                                     <template v-if="changeCourse">
-                                        <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title)">
+                                        <div class="enroll-btn" @click="toEnroll(item.category_id,item.id,item.title,item.is_close)">
                                             立即报名
                                         </div>
                                     </template>
@@ -281,13 +281,13 @@
                 </div>
             </div>
             <div>
-                <a-modal v-model="visible" title="报名成功" on-ok="handleOk">
+                <a-modal v-model="visible" :title="enrollStatus.title" on-ok="handleOk">
                     <template slot="footer">
                         <a-button class="button-primary" type="primary" @click="handleOk">
                             好的
                         </a-button>
                     </template>
-                    <p>请耐心等待文化馆通知</p>
+                    <p>{{enrollStatus.explain}}</p>
                 </a-modal>
             </div>
             <div>
@@ -296,7 +296,7 @@
                         <template v-for="(item, index) in allCourse">
                             <a-select-opt-group :key="index" :label="item.category_name">
                                 <template v-for="(items, indexes) in item.children">
-                                    <a-select-option :value="items.id+','+items.category_id" :key="indexes">
+                                    <a-select-option :value="items.id+','+items.category_id+','+items.is_close" :key="indexes">
                                         {{items.title}}
                                     </a-select-option>
                                 </template>
@@ -321,22 +321,26 @@
                     category_id: "",
                     course_id: "",
                     title: "",
-                    full_name: "东方五金网测试",
-                    mobile: "13758283376",
-                    id_card: "330722199403254018",
+                    full_name: "",
+                    mobile: "",
+                    id_card: "",
                     short_code: "",
                     education: "",
                     address: "",
                 },
                 login: {
-                    mobile: "13758283376",
-                    id_card: "330722199403254018"
+                    mobile: "",
+                    id_card: ""
                 },
                 courseList: [],
                 img_path: "",
                 originWidth: 1,
                 allCourse: [],
                 enrollId: "",
+                enrollStatus: {
+                    title: "",
+                    explain: ""
+                },
                 loginActive: 2,
                 loginFlag: true,
                 newCourse: undefined,
@@ -356,21 +360,21 @@
             if (document.body.clientWidth <= 768) {
                 this.isMobile = true
             }
-            this.originWidth = document.body.clientWidth
-            let that = this
-            window.onresize = function(){ // 定义窗口大小变更通知事件
-                if(!that.timer) {
-                    that.timer = true
-                    setTimeout(function () {
-                        that.timer = false
-                        if(document.body.clientWidth <= 768){
-                            that.originWidth <= 768 ? console.log("不要随便resize哦~") : location.reload()
-                        }else{
-                            that.originWidth > 768 ? console.log("不要随便resize哦~") : location.reload()
-                        }
-                    }, 1000)
-                }
-            };
+            // this.originWidth = document.body.clientWidth
+            // let that = this
+            // window.onresize = function(){ // 定义窗口大小变更通知事件
+            //     if(!that.timer) {
+            //         that.timer = true
+            //         setTimeout(function () {
+            //             that.timer = false
+            //             if(document.body.clientWidth <= 768){
+            //                 that.originWidth <= 768 ? console.log("不要随便resize哦~") : location.reload()
+            //             }else{
+            //                 that.originWidth > 768 ? console.log("不要随便resize哦~") : location.reload()
+            //             }
+            //         }, 1000)
+            //     }
+            // };
         },
         methods: {
             fetch(id) {
@@ -383,7 +387,6 @@
                 this.$api.getCourse(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.img_path = data.data.data.img_path
                             this.courseList = data.data.data.list
                             this.getAllCourse()
@@ -395,7 +398,15 @@
                         console.log(err)
                     })
             },
-            toEnroll(category_id, id, title) {
+            toEnroll(category_id, id, title, status) {
+                if(status == 1){
+                    this.visible = true
+                    this.enrollStatus.title = "报名失败"
+                    this.enrollStatus.explain = "该课程已停止报名"
+                    return false
+                }
+                this.enrollStatus.title = "报名成功"
+                this.enrollStatus.explain = "请等待文化馆通知"
                 this.enroll.category_id = category_id
                 this.enroll.course_id = id
                 this.enroll.title = title
@@ -411,11 +422,9 @@
                     return false
                 } else {
                     let params = {...this.enroll}
-                    console.log(params)
                     this.$api.postCourse(params)
                         .then((data) => {
                             if (data.data.code == 0 && data.data.msg == "success") {
-                                console.log(data)
                                 sessionStorage.setItem("token", data.data.data.token)
                                 $(".enroll-form-box").fadeOut()
                                 this.visible = true
@@ -433,16 +442,22 @@
                 this.changeCourseVisible = true
             },
             reEnrollCourse() {
-                console.log(this.newCourse)
                 if (!this.newCourse) {
                     this.$message.error("请先选择课程")
                 }
                 let newCourse = this.newCourse.split(",")
+                if(newCourse[2] == 1){
+                    this.visible = true
+                    this.enrollStatus.title = "报名失败"
+                    this.enrollStatus.explain = "该课程已停止报名"
+                    return false
+                }
+                this.enrollStatus.title = "报名成功"
+                this.enrollStatus.explain = "请等待文化馆通知"
                 let params = {course_id: newCourse[0], category_id: newCourse[1], status: "2"}
                 this.$api.putCourse(this.enrollId, params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.$message.success("更改成功，等待排课")
                             this.getEnrolledCourse()
                             this.changeCourseVisible = false
@@ -461,7 +476,6 @@
                 this.$api.getCourseTree()
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.allCourse = data.data.data.list
                         } else {
                             this.$message.error(data.data.msg)

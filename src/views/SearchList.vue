@@ -57,7 +57,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.list = data.data.data
                             this.bannerImg = 'http://175.24.135.230:5007/admin/upload/20201022160240332.jpg'
                             if(!data.data.data.list.length){

@@ -223,7 +223,6 @@
                     this.$api.getNewsBase()
                         .then((data) => {
                             if (data.data.code == 0 && data.data.msg == "success") {
-                                console.log(data)
                                 this.foot = data.data.data.foot
                                 this.img_path = data.data.data.img_path
                                 this.getBanner() // 获取banner图
@@ -242,7 +241,6 @@
                 this.$api.getClassroom()
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.classroomList = data.data.data.classroom
                         } else {
                             this.$message.error(data.data.msg)
@@ -263,7 +261,6 @@
                     top = div.offsetTop; //获取所有div的绝对高度
                     itemArray.push(top)
                 });
-                console.log(itemArray)
                 this.rightLiTops = itemArray;
                 // console.log(this.rightLiTops)
             },
@@ -335,7 +332,6 @@
                 let params = {...this.order}
                 params.start_time = this.order.time && this.order.time[0].format("YYYY-MM-DD HH:mm:ss")
                 params.end_time = this.order.time && this.order.time[1].format("YYYY-MM-DD HH:mm:ss")
-                console.log(params)
                 this.$api.postBookClassroom(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
@@ -390,7 +386,6 @@
             handleChange(value) {
                 this.order.classroom_id = value
                 this.classroomIndex = this.classroomList.filter(item => item.id == value)
-                console.log( this.classroomIndex)
             },
             submitGuide: function () {
                 if (!this.guide.person_name) {

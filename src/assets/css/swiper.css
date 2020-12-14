@@ -138,6 +138,7 @@
 }
 
 @media screen and (max-width:1440px) {
+    /*原图片高度443*/
     /**最大媒体宽度**/
     body {
         font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -152,12 +153,12 @@
     }
 
     .swiper-slide {
-        width: 1000px;
+        width: 1200px;
     }
 
     .swiper-slide img {
         width: 100%;
-        height: 443px;
+        height: 531px;
     }
 
     .swiper-slide a {
@@ -188,8 +189,8 @@
 
     .swiper-button-prev {
         width: 50%;
-        height: 443px;
-        left: -500px;
+        height: 531px;
+        left: -600px;
         top: 0;
         background: rgba(0, 0, 0, 0.6);
         margin-top: 0;
@@ -229,8 +230,8 @@
 
     .swiper-button-next {
         width: 50%;
-        height: 443px;
-        right: -500px;
+        height: 531px;
+        right: -600px;
         top: 0;
         background: rgba(0, 0, 0, 0.6);
         margin-top: 0;

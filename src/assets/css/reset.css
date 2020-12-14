@@ -69,3 +69,27 @@ caption, th {
 q:before, q:after, blockquote:before, blockquote:after {
     content:"";
 }
+
+video::-internal-media-controls-download-button {
+    display:none;
+}
+
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px);
+}
+
+/*更改选中的颜色*/
+body::selection {
+    color:#FFFFFF;
+    background-color:#E84893;
+    text-shadow:none;
+}
+body::-moz-selection {
+    color:#FFFFFF;
+    background-color:#E84893;
+    text-shadow:none;
+}

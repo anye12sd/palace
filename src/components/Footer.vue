@@ -86,7 +86,6 @@
                     this.$api.getNewsBase()
                         .then((data) => {
                             if (data.data.code == 0 && data.data.msg == "success") {
-                                console.log(data)
                                 sessionStorage.setItem("menu", JSON.stringify(data.data.data.menu))
                                 this.foot = data.data.data.foot
                                 this.img_path = data.data.data.img_path

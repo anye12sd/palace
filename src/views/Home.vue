@@ -73,7 +73,7 @@
                             </div>
                         </router-link>
                         <div class="culture-content-right flex-1">
-                            <template v-for="(item, index) in trendList.slice(1,9)">
+                            <template v-for="(item, index) in trendList.slice(1,10)">
                                 <router-link tag="div" :to="{path: 'newsDetail', query:{id:item.id}}" :key="index"
                                              class="culture-content-right-box transition flex flexWrap">
                                     <p class="culture-content-right-title">{{item.cate_name}}</p>
@@ -332,6 +332,7 @@
                                     autoplay: 3000,
                                     loop: true,
                                     loopedSlides: 3,
+                                    paginationClickable :true,
                                     centeredSlides: true,
                                     slidesPerView: 'auto',
                                     pagination: '.swiper-pagination',
@@ -349,7 +350,6 @@
                 this.$api.getNewsBase()
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.recommend = data.data.data.recommend
                             sessionStorage.setItem("menu", JSON.stringify(data.data.data.menu))
                             this.menu = data.data.data.menu
@@ -379,7 +379,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.trendList = data.data.data.list
                         } else {
                             this.$message.error(data.data.msg)
@@ -393,11 +392,9 @@
                 this.activityId = id ? id : this.menu[2].news_cate_id
                 this.activity = index || 0
                 let params = {cate_id: id ? id : this.menu[2].news_cate_id, status: true}
-                console.log(params)
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.activityList = data.data.data.list.slice(0,3)
                             // 将轮播图片宽度设置为屏幕70%
                             let imgWidth = document.body.clientWidth *0.7
@@ -432,11 +429,9 @@
                 this.gridId = id ? id : this.menu[3].news_cate_id
                 this.grid = index || 0
                 let params = {cate_id: id ? id : this.menu[3].news_cate_id, status: true}
-                console.log(params)
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.gridList = data.data.data.list.slice(0,2)
                             // 将轮播图片宽度设置为屏幕70%
                             if(this.isMobile){
@@ -470,11 +465,9 @@
             searchLive(index, id) {
                 this.liveId = id ? id : this.menu[4].news_cate_id
                 let params = {cate_id: id ? id : this.menu[4].news_cate_id, status: true}
-                console.log(params)
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.liveList = data.data.data.list.slice(0,3)
                             // 将轮播图片宽度设置为屏幕70%
                             let imgWidth = document.body.clientWidth *0.7
@@ -509,11 +502,9 @@
                 this.roomId = id ? id : this.menu[5].news_cate_id
                 this.room = index || 0
                 let params = {cate_id: id ? id : this.menu[5].news_cate_id, status: true}
-                console.log(params)
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.roomList = data.data.data.list.slice(0,3)
                         } else {
                             this.$message.error(data.data.msg)

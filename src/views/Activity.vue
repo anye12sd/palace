@@ -55,13 +55,20 @@
             }
         },
         mounted() {
+            let that = this
             this.getNewsId()
-            this.getBanner()
+            if(!JSON.parse(sessionStorage.getItem("menu"))){
+                setTimeout(function(){
+                    // 如果没有menu需要延时加载否则会导致获取不到menu而加载不出banner
+                    that.getBanner()
+                }, 300)
+            }else{
+                that.getBanner()
+            }
             if(document.body.clientWidth <= 768){
                 this.isMobile = true
             }
             this.originWidth = document.body.clientWidth
-            let that = this
             window.onresize = function(){ // 定义窗口大小变更通知事件
                 if(!that.timer) {
                     that.timer = true
@@ -82,7 +89,6 @@
                 let imgPath = JSON.parse(sessionStorage.getItem("imgPath"))
                 let menu = JSON.parse(sessionStorage.getItem("menu"))
                 for(let i = 0; i < menu.length; i++){
-                    console.log(i)
                     if( news_id == menu[i].news_cate_id){
                         if(menu[i].image){
                             this.bannerImg = imgPath + menu[i].image
@@ -127,7 +133,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             if (!data.data.data.list.length) {
                                 this.$message.error("该目录下暂无内容，敬请期待", 2)
                                 return false
@@ -147,7 +152,6 @@
                 this.$api.getNewsList(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
                             this.list = data.data.data
                         } else {
                             this.$message.error(data.data.msg)

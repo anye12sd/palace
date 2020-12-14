@@ -13,13 +13,10 @@ axios.interceptors.request.use((config) => {
     let token = sessionStorage.getItem("token");
     token ? config.headers["authorization"] = token : ""
     if (config.method === 'post') {
-        consoleFlag && console.log(config.data)
         config.data = qs.stringify(config.data);
     }
-    consoleFlag && console.log(config)
     return config;
 }, (error) => {
-    consoleFlag && console.log('错误的传参')
     return Promise.reject(error);
 });
 
@@ -34,7 +31,6 @@ axios.interceptors.response.use((res) => {
     }
     return res;
 }, (error) => {
-    console.log('网络异常')
     this.$message.error("网络异常")
     return Promise.reject(error);
 });

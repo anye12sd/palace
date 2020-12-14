@@ -14,10 +14,19 @@
                 <template v-else>
                     <div class="video-box flex flexWrap">
                         <template v-for="(item,index) in list.list">
-                            <router-link tag="div" class="culture-content-left flex-1" :to="{ path: 'NewsDetail', query: {id: item.id} }" :key="index">
+                            <!--                在分类列表页cate_id为26的直接跳到文化普及的线下培训报名去-->
+                            <router-link v-if="item.cate_id != 26" tag="div" class="culture-content-left flex-1" :to="{ path: 'NewsDetail', query: {id: item.id} }" :key="index">
                                 <div class="culture-content-box-mask" v-if="item.status != 1">
                                     <img src="../assets/img/video.png" alt="" class="culture-content-box-img">
                                 </div>
+                                <img :src="list.img_path + item.image + imgWidth.contentImg" alt="" @error="showErrImg">
+                                <p class="culture-content-left-time">{{item.create_time}}</p>
+                                <p class="culture-content-left-text">
+                                    <span class="culture-content-left-text-title">{{item.cate_name}}</span>
+                                    <span class="culture-content-left-text-content">{{item.title}}</span>
+                                </p>
+                            </router-link>
+                            <router-link v-else tag="div" class="culture-content-left flex-1" :to="{ path: 'grid?news_id=26'}" :key="index">
                                 <img :src="list.img_path + item.image + imgWidth.contentImg" alt="" @error="showErrImg">
                                 <p class="culture-content-left-time">{{item.create_time}}</p>
                                 <p class="culture-content-left-text">
@@ -35,7 +44,18 @@
             <div class="list-box-1">
                 <template v-if="type == 'video'">
                     <div class="list" v-for="(item,index) in list.list" :key="index">
-                        <router-link tag="div" class="flex flexWrap" :to="{ path: 'NewsDetail', query: {id: item.id} }">
+                        <!--                在分类列表页cate_id为26的直接跳到文化普及的线下培训报名去-->
+                        <router-link v-if="item.cate_id != 26" tag="div" class="flex flexWrap" :to="{ path: 'NewsDetail', query: {id: item.id} }">
+                            <div class="list-box-left flex-1">
+                                <p class="list-content flex-1">{{item.title}}</p>
+                                <span class="list-title">{{item.cate_name}}</span>
+                                <span class="list-time">{{item.create_time}}</span>
+                            </div>
+                            <div class="list-box-right">
+                                <img :src="list.img_path + item.image + imgWidth.contentImg" alt="" @error="showErrImg">
+                            </div>
+                        </router-link>
+                        <router-link v-else tag="div" class="flex flexWrap" :to="{ path: 'grid?news_id=26' }">
                             <div class="list-box-left flex-1">
                                 <p class="list-content flex-1">{{item.title}}</p>
                                 <span class="list-title">{{item.cate_name}}</span>
