@@ -45,6 +45,15 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
+  setTimeout(() => {
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2818bc77ed47ac163d107e2039e82c97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  }, 50)
   next()
 })
 

@@ -9,22 +9,22 @@
                     <router-link tag="li" :to="{ path: '/' }">
                         <span>文化馆首页</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'trends' }">
+                    <router-link tag="li" :to="{ path: 'trends?news_id=17' }">
                         <span>文化动态</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'activity' }">
+                    <router-link tag="li" :to="{ path: 'activity?news_id=18' }">
                         <span>文化活动</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'grid' }">
+                    <router-link tag="li" :to="{ path: 'grid?news_id=19' }">
                         <span>文化普及</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'live' }">
+                    <router-link tag="li" :to="{ path: 'live?news_id=20' }">
                         <span>文化直播</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'showroom' }">
+                    <router-link tag="li" :to="{ path: 'showroom?news_id=21' }">
                         <span>数字展厅</span>
                     </router-link>
-                    <router-link tag="li" :to="{ path: 'contact' }">
+                    <router-link tag="li" :to="{ path: 'contact?news_id=0' }">
                         <span>联系我们</span>
                     </router-link>
                 </ul>
@@ -35,7 +35,9 @@
                 <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>
                 <span>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</span>
                 <span>{{foot.company_name}}版权所有</span>
-                <span v-if="foot.foot_icp">浙ICP证{{foot.foot_icp}}号</span>
+                <a target="_blank" v-if="foot.foot_icp" :href="foot.foot_icp_link" style="display:inline-block;text-decoration:none;color: inherit">
+                 <span>{{foot.foot_icp}}</span>
+                </a>
                 <span style="width: 100%">
                 <a target="_blank" :href="foot.foot_wangan_link"
                    style="display:inline-block;text-decoration:none;color: inherit">
@@ -51,7 +53,9 @@
 <!--                <span style="float: right;margin-top: -12px"><a href="http://bszs.conac.cn/sitename?method=show&id=26E63DDA065E14EEE053012819AC5150" target="_blank"><img src="../assets/img/blue.png" alt=""></a></span>-->
                 <p>Copyright &copy;{{foot.copyright_time}} Ykol. All Rights Reserved</p>
                 <p>{{foot.company_name}}版权所有</p>
-                <span v-if="foot.foot_icp">浙ICP证{{foot.foot_icp}}号</span>
+                <a target="_blank" v-if="foot.foot_icp" :href="foot.foot_icp_link" style="display:inline-block;text-decoration:none;color: inherit">
+                    <span>{{foot.foot_icp}}</span>
+                </a>
                 <span style="width: 100%">
                     <a target="_blank" :href="foot.foot_wangan_link" style="display:inline-block;text-decoration:none;color: inherit">
                         <p style="display: inline-block">浙公网安备 {{foot.foot_wangan}}号</p>

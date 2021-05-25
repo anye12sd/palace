@@ -395,7 +395,7 @@
                 shareBox: false,
                 qrcodeImg: "",
                 ip: "",
-                videoUrl: "http://42.192.209.104/video_upload/",
+                videoUrl: "https://ykwhg.yk.gov.cn/video_upload/",
                 videoLink: "",
                 videoType: "",
                 videoPause: true,
@@ -581,7 +581,7 @@
                 this.$api.getNewsDetail(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
+                            // console.log(data)
                             this.dataDetail = data.data.data.detail
                             this.visits()
                             // 统计访问数
@@ -594,7 +594,7 @@
                             this.qrImg = this.img_path + foot.qr_code
                             // 新闻详情标题和文章标题对应
                             document.title = this.dataDetail.title
-                            console.log(data.data.data.next_list_arr)
+                            // console.log(data.data.data.next_list_arr)
                             let that = this
                             setTimeout(function(){
                                 if (data.data.data.next_list_arr.length) {

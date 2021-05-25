@@ -497,7 +497,7 @@
                 this.$api.postLogin(params)
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
+                            // console.log(data)
                             this.$message.success("登录成功")
                             sessionStorage.setItem("token", data.data.data.token)
                             sessionStorage.setItem("userStatus", JSON.stringify(data.data.data.user))
@@ -535,7 +535,7 @@
                 this.$api.getSign()
                     .then((data) => {
                         if (data.data.code == 0 && data.data.msg == "success") {
-                            console.log(data)
+                            // console.log(data)
                             this.changeCourse = false
                             this.enrolled = false
                             this.courseList = data.data.data.list
